@@ -16,7 +16,8 @@ import java.util.function.Supplier;
 import org.ironmaple.simulation.drivesims.COTS;
 import org.ironmaple.simulation.drivesims.GyroSimulation;
 
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.constants.Constants.*;
@@ -130,11 +131,18 @@ public final class Configs {
             drivingConfig.encoder
                     .positionConversionFactor(drivingFactor) // meters
                     .velocityConversionFactor(drivingFactor / 60.0); // meters per second
+        // TODO: tune values (kS + kA)
+            drivingConfig.closedLoop
+                .feedForward
+                        .kS(0.0) // static friction compensation
+                        .kV(drivingVelocityFeedForward)
+                        .kA(0.0) // acceleration gain
+                        .kG(0.0); // gravity gain (keep at 0 since it is not in way of motion)
             drivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
                     .pid(0.04, 0, 0)
-                    .velocityFF(drivingVelocityFeedForward)
+                    //.velocityFF(drivingVelocityFeedForward)
                     .outputRange(-1, 1);
 
             turningConfig
