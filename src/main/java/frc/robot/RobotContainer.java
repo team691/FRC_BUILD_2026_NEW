@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.constants.Configs;
 import frc.robot.enums.RobotMode;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
+import org.littletonrobotics.junction.LoggedPowerDistribution;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
