@@ -177,10 +177,10 @@ public class Robot extends LoggedRobot {
  public void simulationInit() {}
 
  /** This function is called periodically whilst in simulation. */
- @Override
- public void simulationPeriodic() {
-     m_robotContainer.updateSimulation();
- }
+//  @Override
+//  public void simulationPeriodic() {
+//      m_robotContainer.updateSimulation();
+//  }
 }
 
 // ping 172.22.11.2

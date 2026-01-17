@@ -16,8 +16,17 @@ import com.revrobotics.RelativeEncoder;
 
 import frc.robot.constants.Configs;
 import frc.robot.constants.Constants.ModuleConstants;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import static edu.wpi.first.units.Units.Volts;
+import edu.wpi.first.units.VoltageUnit;
+// import edu.wpi.first.units.Voltage;
+import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.Measure;
 
-public class MAXSwerveModule {
+public class MAXSwerveModule implements Subsystem {
   private final SparkMax m_drivingSparkMax;
   private final SparkMax m_turningSparkMax;
 
@@ -29,6 +38,26 @@ public class MAXSwerveModule {
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
+  
+  private final SysIdRoutine m_SysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(
+      // Volts.of(2),
+      null,
+      Volts.of(4),
+      null,
+      null
+    ),
+    new SysIdRoutine.Mechanism(
+      // (Measure<Voltage> voltage) -> {
+      //   m_drivingSparkMax.setVoltage(0.0);
+      //   m_turningSparkMax.setVoltage(0.0);
+      // },
+      null,
+      null,
+      this,
+      "Swerve Drive"
+    )
+  );
 
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor,
@@ -118,6 +147,14 @@ public class MAXSwerveModule {
     m_drivingSparkMax.configure(drivingConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     m_turningSparkMax.configure(turningConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return m_SysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return m_SysIdRoutine.dynamic(direction);
+  }
 
 public void unsettling() {
     SparkMaxConfig drivingConfig = new SparkMaxConfig();

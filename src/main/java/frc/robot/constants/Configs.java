@@ -13,8 +13,8 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.function.Supplier;
 
-import org.ironmaple.simulation.drivesims.COTS;
-import org.ironmaple.simulation.drivesims.GyroSimulation;
+// import org.ironmaple.simulation.drivesims.COTS;
+// import org.ironmaple.simulation.drivesims.GyroSimulation;
 
 import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.FeedbackSensor;
@@ -106,7 +106,7 @@ public final class Configs {
                 * (BUMPER_WIDTH.in(Meters) * BUMPER_WIDTH.in(Meters) + BUMPER_LENGTH.in(Meters) * BUMPER_LENGTH.in(Meters))
                 / 12.0);
 
-        public static final Supplier<GyroSimulation> gyroSimulationFactory = COTS.ofNav2X();
+        // public static final Supplier<GyroSimulation> gyroSimulationFactory = COTS.ofNav2X();
 
         /* dead configs, don't change them */
         public static final int ODOMETRY_CACHE_CAPACITY = 10;

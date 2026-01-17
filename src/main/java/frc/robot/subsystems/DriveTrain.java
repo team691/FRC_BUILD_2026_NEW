@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 // Imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.util.WPIUtilJNI;
@@ -23,6 +24,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import frc.robot.subsystems.MAXSwerveModule;
 
 /* 
  * The DriveTrain class handles the drive subsystem of the robot.
@@ -325,5 +327,13 @@ public class DriveTrain extends SubsystemBase {
   public Object getTrajectoryConfig() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getTrajectoryConfig'");
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return m_rearLeft.sysIdDynamic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return m_rearLeft.sysIdDynamic(direction);
   }
 }

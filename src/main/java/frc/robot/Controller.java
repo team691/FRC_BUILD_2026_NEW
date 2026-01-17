@@ -2,9 +2,11 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
@@ -15,6 +17,7 @@ public class Controller extends SubsystemBase{
 
     Joystick m_joystick1 = new Joystick(0);
     Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
+    XboxController m_controller = new XboxController(2);
     // Limelight m_lime = new Limelight(DriveTrain.getInstance());
 
     boolean shouldRunBelt = true;
@@ -78,6 +81,12 @@ public class Controller extends SubsystemBase{
         new JoystickButton(m_joystick1, 4)
             .toggleOnTrue(
                 new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
+
+        new JoystickButton(m_joystick1, 5)
+            .whileTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+
+        new JoystickButton(m_joystick1, 5)
+            .whileTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     @Override
