@@ -104,6 +104,8 @@ public class RobotContainer {
       //   }
 
         SmartDashboard.putData("Auto Chooser", m_chooser);
+
+        m_chooser.addOption("Test PP", DriveTrain.getInstance().ppTestFind());
         // SmartDashboard.putData("PDP", m_pdp);
 
         // // get currents for different channels

@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.utils.SwerveUtils;
 // Position imports
@@ -24,7 +25,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import frc.robot.subsystems.MAXSwerveModule;
+import com.pathplanner.lib.path.PathConstraints;
 
 /* 
  * The DriveTrain class handles the drive subsystem of the robot.
@@ -242,6 +243,23 @@ public class DriveTrain extends SubsystemBase {
       m_frontRight.getState(),
       m_rearLeft.getState(),
       m_rearRight.getState());
+  }
+  
+  public Command ppTestFind() {
+    Pose2d targetPose = new Pose2d(10, 5, Rotation2d.fromDegrees(180));
+
+    PathConstraints constraints = new PathConstraints(
+      3.0, 4.0,
+     Units.degreesToRadians(540), Units.degreesToRadians(720)
+    );
+
+    Command pathfindingCommand = AutoBuilder.pathfindToPose(
+      targetPose,
+      constraints,
+      0.0
+    );
+
+    return pathfindingCommand;
   }
 
   // public void driveRobotRelative(ChassisSpeeds speeds){
