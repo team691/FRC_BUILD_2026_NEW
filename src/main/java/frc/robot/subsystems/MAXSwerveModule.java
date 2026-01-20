@@ -11,6 +11,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
@@ -45,7 +46,8 @@ public class MAXSwerveModule implements Subsystem {
       null,
       Volts.of(4),
       null,
-      null
+      // null
+      (state) -> SignalLogger.writeString("state", state.toString())
     ),
     new SysIdRoutine.Mechanism(
       // (Measure<Voltage> voltage) -> {

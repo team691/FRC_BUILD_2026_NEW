@@ -134,10 +134,10 @@ public final class Configs {
         // TODO: tune values (kS + kA)
             drivingConfig.closedLoop
                 .feedForward
-                        .kS(0.0) // static friction compensation
-                        .kV(drivingVelocityFeedForward)
-                        .kA(0.0) // acceleration gain
-                        .kG(0.0); // gravity gain (keep at 0 since it is not in way of motion)
+                        // .kS(0.0) // static friction compensation
+                        .kV(drivingVelocityFeedForward);
+                        // .kA(0.0) // acceleration gain
+                        // .kG(0.0); // gravity gain (keep at 0 since it is not in way of motion)
             drivingConfig.closedLoop
                     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                     // These are example gains you may need to them for your own robot!
