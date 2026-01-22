@@ -96,7 +96,8 @@ public class DriveTrain extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
-  private Consumer<Voltage> m_voltageDrive = m_DriveTrain.voltageDrive();
+  // private final Voltage volts = Volts.of(4);
+  private final Consumer<Voltage> m_voltageDrive = this::voltageDrive;
 
   SysIdRoutine m_SysIdRoutine = new SysIdRoutine(
     new SysIdRoutine.Config(
@@ -105,10 +106,12 @@ public class DriveTrain extends SubsystemBase {
       null
     ), 
     new SysIdRoutine.Mechanism(
-      m_voltageDrive, 
-      null, 
-      m_DriveTrain, 
-      null)
+      m_voltageDrive,
+      // null,
+      null,
+      this,
+      // m_DriveTrain, 
+      "Mechanism_Characteristic")
   );
 
   // Creates new Drive Subsystem
@@ -372,13 +375,13 @@ public class DriveTrain extends SubsystemBase {
     throw new UnsupportedOperationException("Unimplemented method 'getTrajectoryConfig'");
   }
 
-  public Consumer<Voltage> voltageDrive() {
-    return (Voltage volts) -> {
+  public void voltageDrive(Voltage volts) {
+    // return (Voltage volts) -> {
       m_frontLeft.setVoltage(volts);
       m_frontRight.setVoltage(volts);
       m_rearLeft.setVoltage(volts);
       m_rearRight.setVoltage(volts);
-    };
+    // };
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
