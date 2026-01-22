@@ -129,7 +129,6 @@ public class DriveTrain extends SubsystemBase {
       throw new RuntimeException("Failed to configure AutoBuilder", e);
     }
 }
-    
 
   // Updates odometry periodically
   public void periodic() {
@@ -251,7 +250,7 @@ public class DriveTrain extends SubsystemBase {
   }
   
   public Command ppTestFind() {
-    Pose2d targetPose = new Pose2d(10, 5, Rotation2d.fromDegrees(180));
+    Pose2d targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));
 
     PathConstraints constraints = new PathConstraints(
       3.0, 4.0,
