@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Voltage;
 import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.utils.SwerveUtils;
 // Position imports
@@ -22,6 +23,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import static edu.wpi.first.units.Units.Volts;
+
+import java.util.function.Consumer;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -90,6 +96,21 @@ public class DriveTrain extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
+  private Consumer<Voltage> m_voltageDrive = m_DriveTrain.voltageDrive();
+
+  SysIdRoutine m_SysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(
+      null, 
+      Volts.of(4), 
+      null
+    ), 
+    new SysIdRoutine.Mechanism(
+      m_voltageDrive, 
+      null, 
+      m_DriveTrain, 
+      null)
+  );
+
   // Creates new Drive Subsystem
   private DriveTrain() {
     // All other subsystem initialization
@@ -129,7 +150,6 @@ public class DriveTrain extends SubsystemBase {
       throw new RuntimeException("Failed to configure AutoBuilder", e);
     }
 }
-    
 
   // Updates odometry periodically
   public void periodic() {
@@ -251,7 +271,7 @@ public class DriveTrain extends SubsystemBase {
   }
   
   public Command ppTestFind() {
-    Pose2d targetPose = new Pose2d(10, 5, Rotation2d.fromDegrees(180));
+    Pose2d targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));
 
     PathConstraints constraints = new PathConstraints(
       3.0, 4.0,
@@ -352,11 +372,20 @@ public class DriveTrain extends SubsystemBase {
     throw new UnsupportedOperationException("Unimplemented method 'getTrajectoryConfig'");
   }
 
+  public Consumer<Voltage> voltageDrive() {
+    return (Voltage volts) -> {
+      m_frontLeft.setVoltage(volts);
+      m_frontRight.setVoltage(volts);
+      m_rearLeft.setVoltage(volts);
+      m_rearRight.setVoltage(volts);
+    };
+  }
+
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return m_rearLeft.sysIdDynamic(direction);
+    return m_SysIdRoutine.quasistatic(direction);
   }
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return m_rearLeft.sysIdDynamic(direction);
+    return m_SysIdRoutine.dynamic(direction);
   }
 }

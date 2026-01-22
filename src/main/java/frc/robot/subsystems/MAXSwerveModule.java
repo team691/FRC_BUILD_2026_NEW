@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import static edu.wpi.first.units.Units.Volts;
+
+import java.util.function.Consumer;
+
 import edu.wpi.first.units.VoltageUnit;
 // import edu.wpi.first.units.Voltage;
 import edu.wpi.first.units.measure.Velocity;
@@ -39,27 +42,6 @@ public class MAXSwerveModule implements Subsystem {
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
-  
-  private final SysIdRoutine m_SysIdRoutine = new SysIdRoutine(
-    new SysIdRoutine.Config(
-      // Volts.of(2),
-      null,
-      Volts.of(4),
-      null,
-      // null
-      (state) -> SignalLogger.writeString("state", state.toString())
-    ),
-    new SysIdRoutine.Mechanism(
-      // (Measure<Voltage> voltage) -> {
-      //   m_drivingSparkMax.setVoltage(0.0);
-      //   m_turningSparkMax.setVoltage(0.0);
-      // },
-      null,
-      null,
-      this,
-      "Swerve Drive"
-    )
-  );
 
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor,
@@ -139,6 +121,7 @@ public class MAXSwerveModule implements Subsystem {
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
   }
+
   public void setlimit1() {
     SparkMaxConfig drivingConfig = new SparkMaxConfig();
     SparkMaxConfig turningConfig = new SparkMaxConfig();
@@ -148,24 +131,21 @@ public class MAXSwerveModule implements Subsystem {
     
     m_drivingSparkMax.configure(drivingConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     m_turningSparkMax.configure(turningConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-}
-
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return m_SysIdRoutine.quasistatic(direction);
   }
 
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return m_SysIdRoutine.dynamic(direction);
+  public void unsettling() {
+      SparkMaxConfig drivingConfig = new SparkMaxConfig();
+      SparkMaxConfig turningConfig = new SparkMaxConfig();
+      
+      drivingConfig.smartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
+      turningConfig.smartCurrentLimit(ModuleConstants.kTurningMotorCurrentLimit);
+      
+      m_drivingSparkMax.configure(drivingConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+      m_turningSparkMax.configure(turningConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-public void unsettling() {
-    SparkMaxConfig drivingConfig = new SparkMaxConfig();
-    SparkMaxConfig turningConfig = new SparkMaxConfig();
-    
-    drivingConfig.smartCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
-    turningConfig.smartCurrentLimit(ModuleConstants.kTurningMotorCurrentLimit);
-    
-    m_drivingSparkMax.configure(drivingConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    m_turningSparkMax.configure(turningConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-}
+  public void setVoltage(Voltage volts) {
+    m_drivingSparkMax.setVoltage(volts);
+    m_turningSparkMax.setVoltage(volts);
+  }
 }
