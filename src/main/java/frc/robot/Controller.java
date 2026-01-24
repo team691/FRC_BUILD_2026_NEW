@@ -83,10 +83,10 @@ public class Controller extends SubsystemBase{
                 new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
 
         new JoystickButton(m_joystick1, 5)
-            .whileTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+            .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
 
         new JoystickButton(m_joystick1, 6)
-            .whileTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
+            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     @Override

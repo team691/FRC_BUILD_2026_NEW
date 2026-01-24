@@ -8,6 +8,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 // Swerve specific imports
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -108,7 +109,7 @@ public class DriveTrain extends SubsystemBase {
     new SysIdRoutine.Mechanism(
       m_voltageDrive,
       // null,
-      null,
+      this::logSysId,
       this,
       // m_DriveTrain, 
       "Mechanism_Characteristic")
@@ -382,6 +383,28 @@ public class DriveTrain extends SubsystemBase {
       m_rearLeft.setVoltage(volts);
       m_rearRight.setVoltage(volts);
     // };
+  }
+
+  public void logSysId(SysIdRoutineLog log) {
+    log.motor("m_rear_left")
+    .value("velocity", m_rearLeft.getSysVelocity(), "m/s")
+    .value("position", m_rearLeft.getSysPosition(), "dist")
+    .value("voltage", m_rearLeft.getSysVoltage(), "volts");
+
+    log.motor("m_rear_right")
+    .value("velocity", m_rearRight.getSysVelocity(), "m/s")
+    .value("position", m_rearRight.getSysPosition(), "dist")
+    .value("voltage", m_rearRight.getSysVoltage(), "volts");
+
+    log.motor("m_front_left")
+    .value("velocity", m_frontLeft.getSysVelocity(), "m/s")
+    .value("position", m_frontLeft.getSysPosition(), "dist")
+    .value("voltage", m_frontLeft.getSysVoltage(), "volts");
+
+    log.motor("m_front_right")
+    .value("velocity", m_frontRight.getSysVelocity(), "m/s")
+    .value("position", m_frontRight.getSysPosition(), "dist")
+    .value("voltage", m_frontRight.getSysVoltage(), "volts");
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {

@@ -146,6 +146,20 @@ public class MAXSwerveModule implements Subsystem {
 
   public void setVoltage(Voltage volts) {
     m_drivingSparkMax.setVoltage(volts);
-    m_turningSparkMax.setVoltage(volts);
+    // m_turningSparkMax.setVoltage(volts);
+  }
+
+  public double getSysVelocity() {
+    return m_drivingEncoder.getVelocity();
+    // m_turningEncoder.getVelocity();
+  }
+
+  public double getSysPosition() {
+    return m_drivingEncoder.getPosition();
+    // m_turningEncoder.'getPosition();
+  }
+
+  public double getSysVoltage() {
+    return m_drivingSparkMax.getBusVoltage() * m_drivingSparkMax.getAppliedOutput();
   }
 }
