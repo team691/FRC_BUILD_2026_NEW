@@ -386,25 +386,26 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void logSysId(SysIdRoutineLog log) {
+    System.out.println("SYS LOGGING");
     log.motor("m_rear_left")
-    .value("velocity", m_rearLeft.getSysVelocity(), "m/s")
-    .value("position", m_rearLeft.getSysPosition(), "dist")
-    .value("voltage", m_rearLeft.getSysVoltage(), "volts");
+    .value("m_rear_left/velocity", m_rearLeft.getSysVelocity(), "m/s")
+    .value("m_rear_left/position", m_rearLeft.getSysPosition(), "dist")
+    .value("m_rear_left/voltage", m_rearLeft.getSysVoltage(), "volts");
 
     log.motor("m_rear_right")
-    .value("velocity", m_rearRight.getSysVelocity(), "m/s")
-    .value("position", m_rearRight.getSysPosition(), "dist")
-    .value("voltage", m_rearRight.getSysVoltage(), "volts");
+    .value("m_rear_right/velocity", m_rearRight.getSysVelocity(), "m/s")
+    .value("m_rear_right/position", m_rearRight.getSysPosition(), "dist")
+    .value("m_rear_right/voltage", m_rearRight.getSysVoltage(), "volts");
 
     log.motor("m_front_left")
-    .value("velocity", m_frontLeft.getSysVelocity(), "m/s")
-    .value("position", m_frontLeft.getSysPosition(), "dist")
-    .value("voltage", m_frontLeft.getSysVoltage(), "volts");
+    .value("m_front_left/velocity", m_frontLeft.getSysVelocity(), "m/s")
+    .value("m_front_left/position", m_frontLeft.getSysPosition(), "dist")
+    .value("m_front_left/voltage", m_frontLeft.getSysVoltage(), "volts");
 
     log.motor("m_front_right")
-    .value("velocity", m_frontRight.getSysVelocity(), "m/s")
-    .value("position", m_frontRight.getSysPosition(), "dist")
-    .value("voltage", m_frontRight.getSysVoltage(), "volts");
+    .value("m_front_right/velocity", m_frontRight.getSysVelocity(), "m/s")
+    .value("m_front_right/position", m_frontRight.getSysPosition(), "dist")
+    .value("m_front_right/voltage", m_frontRight.getSysVoltage(), "volts");
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
