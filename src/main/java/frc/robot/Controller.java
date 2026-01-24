@@ -63,30 +63,36 @@ public class Controller extends SubsystemBase{
 
     //configures all buttons
     private void configureButtonBindings(){
-        new JoystickButton(m_joystick2, 12)
-            .whileTrue(new RunCommand(
-                () -> DriveTrain.getInstance().setX(),
-                DriveTrain.getInstance()));
+        // new JoystickButton(m_joystick2, 12)
+        //     .whileTrue(new RunCommand(
+        //         () -> DriveTrain.getInstance().setX(),
+        //         DriveTrain.getInstance()));
 
-        // This button for the DRIVER will zero the gyro's angle
-        new JoystickButton(m_joystick1, 12)
-            .whileTrue(new RunCommand(
-                () -> DriveTrain.getInstance().zeroHeading(),
-                DriveTrain.getInstance()));
+        // // This button for the DRIVER will zero the gyro's angle
+        // new JoystickButton(m_joystick1, 12)
+        //     .whileTrue(new RunCommand(
+        //         () -> DriveTrain.getInstance().zeroHeading(),
+        //         DriveTrain.getInstance()));
 
-        new JoystickButton(m_joystick1, 3)
-            .toggleOnTrue(
-                new AutoAlign(DriveTrain.getInstance(), "limelight-two"));
+        // new JoystickButton(m_joystick1, 3)
+        //     .toggleOnTrue(
+        //         new AutoAlign(DriveTrain.getInstance(), "limelight-two"));
 
-        new JoystickButton(m_joystick1, 4)
-            .toggleOnTrue(
-                new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
+        // new JoystickButton(m_joystick1, 4)
+        //     .toggleOnTrue(
+        //         new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
 
         new JoystickButton(m_joystick1, 5)
             .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
 
         new JoystickButton(m_joystick1, 6)
-            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
+            .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+        new JoystickButton(m_joystick2, 5)
+            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+
+        new JoystickButton(m_joystick2, 6)
+            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
     }
 
     @Override
