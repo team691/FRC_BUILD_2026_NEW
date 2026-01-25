@@ -18,6 +18,8 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.utils.SwerveUtils;
+import frc.robot.utils.Elastic.Notification;
+import frc.robot.utils.Elastic.NotificationLevel;
 // Position imports
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -35,12 +37,18 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 
+import frc.robot.utils.Elastic;
+
 /* 
  * The DriveTrain class handles the drive subsystem of the robot.
  * Configured for REV Robotics Swerve Modules 
  */
 public class DriveTrain extends SubsystemBase {
   private static final DriveTrain m_DriveTrain = new DriveTrain();
+  private static final Elastic m_elastic = new Elastic();
+  public final Notification ReZero = new Notification(NotificationLevel.INFO, "Reset Gyro", "Peak anime watch ep 15");
+
+  public final Notification notif = new Notification(NotificationLevel.INFO, "voltage", "sending voltage");
   
   public static DriveTrain getInstance() {
       return m_DriveTrain;
@@ -82,6 +90,7 @@ public class DriveTrain extends SubsystemBase {
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
   private static RobotConfig config;
+  private double m_lastReZeroTime = -1.0;
 
   /* Odemetry tracks the robot pose utilizing the gyro
    * mainly used for field relativity
@@ -335,6 +344,12 @@ public class DriveTrain extends SubsystemBase {
   // Zeros robot heading
   public void zeroHeading() {
     m_navx.reset();
+    // double now = WPIUtilJNI.now() * 1e-6;
+    // if (now - m_lastReZeroTime >= 1.0) {
+    //   m_elastic.sendNotification(ReZero);
+    //   m_lastReZeroTime = now;
+    // }
+    m_elastic.sendNotification(ReZero);
   }
 
   public Command zeroAuotHeading() {
@@ -379,6 +394,7 @@ public class DriveTrain extends SubsystemBase {
   public void voltageDrive(Voltage volts) {
     // return (Voltage volts) -> {
       m_frontLeft.setVoltage(volts);
+      m_elastic.sendNotification(notif);
       m_frontRight.setVoltage(volts);
       m_rearLeft.setVoltage(volts);
       m_rearRight.setVoltage(volts);

@@ -10,11 +10,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.utils.Elastic.Notification;
+import frc.robot.utils.Elastic.NotificationLevel;
 // import frc.robot.subsystems.Limelight;
 import frc.robot.commands.AutoAlign;
 
 public class Controller extends SubsystemBase{
-
     Joystick m_joystick1 = new Joystick(0);
     Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
     XboxController m_controller = new XboxController(2);
@@ -63,24 +64,24 @@ public class Controller extends SubsystemBase{
 
     //configures all buttons
     private void configureButtonBindings(){
-        // new JoystickButton(m_joystick2, 12)
-        //     .whileTrue(new RunCommand(
-        //         () -> DriveTrain.getInstance().setX(),
-        //         DriveTrain.getInstance()));
+        new JoystickButton(m_joystick2, 12)
+            .whileTrue(new RunCommand(
+                () -> DriveTrain.getInstance().setX(),
+                DriveTrain.getInstance()));
 
-        // // This button for the DRIVER will zero the gyro's angle
-        // new JoystickButton(m_joystick1, 12)
-        //     .whileTrue(new RunCommand(
-        //         () -> DriveTrain.getInstance().zeroHeading(),
-        //         DriveTrain.getInstance()));
+        // This button for the DRIVER will zero the gyro's angle
+        new JoystickButton(m_joystick1, 12)
+            .whileTrue(new RunCommand(
+                () -> DriveTrain.getInstance().zeroHeading(),
+                DriveTrain.getInstance()));
 
-        // new JoystickButton(m_joystick1, 3)
-        //     .toggleOnTrue(
-        //         new AutoAlign(DriveTrain.getInstance(), "limelight-two"));
+        new JoystickButton(m_joystick1, 3)
+            .toggleOnTrue(
+                new AutoAlign(DriveTrain.getInstance(), "limelight-two"));
 
-        // new JoystickButton(m_joystick1, 4)
-        //     .toggleOnTrue(
-        //         new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
+        new JoystickButton(m_joystick1, 4)
+            .toggleOnTrue(
+                new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
 
         new JoystickButton(m_joystick1, 5)
             .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -92,7 +93,7 @@ public class Controller extends SubsystemBase{
             .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
 
         new JoystickButton(m_joystick2, 6)
-            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     @Override

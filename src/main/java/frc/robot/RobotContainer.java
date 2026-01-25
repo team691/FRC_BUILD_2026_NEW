@@ -15,6 +15,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.utils.Elastic.Notification;
+import frc.robot.utils.Elastic.NotificationLevel;
+
 import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -35,7 +38,6 @@ import org.littletonrobotics.junction.LoggedPowerDistribution;
 public class RobotContainer {
   // The robot's subsystems
     private static final RobotMode JAVA_SIM_MODE = RobotMode.SIM;
-  
     // public final LoggedPowerDistribution powerDistribution;
     // private final PowerDistribution m_pdp = new PowerDistribution();
 
@@ -106,6 +108,8 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", m_chooser);
 
         m_chooser.addOption("Test PP", DriveTrain.getInstance().ppTestFind());
+
+        SmartDashboard.putData("Field", field);
         // SmartDashboard.putData("PDP", m_pdp);
 
         // // get currents for different channels
