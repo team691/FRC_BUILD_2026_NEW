@@ -8,15 +8,12 @@ package frc.robot.utils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pathplanner.lib.config.RobotConfig;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.PubSubOption;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StringTopic;
 import edu.wpi.first.util.WPIUtilJNI;
-import frc.robot.constants.Constants.DriveConstants;
 
 public final class Elastic {
   private static final StringTopic notificationTopic =
@@ -28,8 +25,6 @@ public final class Elastic {
   private static final StringPublisher selectedTabPublisher =
       selectedTabTopic.publish(PubSubOption.keepDuplicates(true));
   private static final ObjectMapper objectMapper = new ObjectMapper();
-  private double m_prevTime = WPIUtilJNI.now() * 1e-6;
-  private static RobotConfig config;
   private static double m_lastReZeroTime = -1.0;
   
 

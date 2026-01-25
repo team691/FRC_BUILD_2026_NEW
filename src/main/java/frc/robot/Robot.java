@@ -19,12 +19,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.enums.RobotMode;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utils.Elastic;
+import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.Elastic.Notification;
 import frc.robot.utils.Elastic.NotificationLevel;
-import frc.robot.constants.LimelightHelpers;
+
 import org.littletonrobotics.junction.LoggedRobot;
-import frc.robot.utils.Elastic.Notification;
-import frc.robot.utils.Elastic.NotificationLevel;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,14 +33,13 @@ import frc.robot.utils.Elastic.NotificationLevel;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-  private static final Elastic m_elastic = new Elastic();
   private static final RobotMode JAVA_SIM_MODE = RobotMode.SIM;
   public static final RobotMode CURRENT_ROBOT_MODE = isReal() ? RobotMode.REAL : JAVA_SIM_MODE;
   private boolean SetToCorrectPosition = false;
   private RobotContainer m_robotContainer;
   private final AHRS m_navx = new AHRS(NavXComType.kMXP_SPI);
-  public final Notification teleop = new Notification(NotificationLevel.INFO, "Teleop Mode", "Teleoperated mode activated");
-  public final Notification auto = new Notification(NotificationLevel.INFO, "Auto Mode", "Autonomous mode activated");
+  private static final Notification teleop = new Notification(NotificationLevel.INFO, "Teleop Mode", "Teleoperated mode activated");
+  public Notification auto = new Notification(NotificationLevel.INFO, "Auto Mode", "Autonomous mode activated");
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -139,7 +137,7 @@ public class Robot extends LoggedRobot {
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
-      m_elastic.sendNotification(auto);
+      Elastic.sendNotification(auto);
     }
   }
 
@@ -158,7 +156,7 @@ public class Robot extends LoggedRobot {
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-      m_elastic.sendNotification(teleop);
+      Elastic.sendNotification(teleop);
     }
   }
 

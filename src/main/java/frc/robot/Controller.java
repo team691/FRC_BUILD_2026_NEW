@@ -7,12 +7,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.utils.Elastic.Notification;
-import frc.robot.utils.Elastic.NotificationLevel;
-// import frc.robot.subsystems.Limelight;
 import frc.robot.commands.AutoAlign;
 
 public class Controller extends SubsystemBase{

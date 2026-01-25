@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.constants.LimelightHelpers;
-import frc.robot.constants.LimelightHelpers.PoseEstimate;
+import frc.robot.utils.LimelightHelpers;
+import frc.robot.utils.LimelightHelpers.PoseEstimate;
 
 public class AutoAlign extends Command {
     private final DriveTrain drivebase;

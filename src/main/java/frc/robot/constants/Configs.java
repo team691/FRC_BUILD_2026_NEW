@@ -11,12 +11,9 @@ import edu.wpi.first.units.measure.*;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.function.Supplier;
-
 // import org.ironmaple.simulation.drivesims.COTS;
 // import org.ironmaple.simulation.drivesims.GyroSimulation;
 
-import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 

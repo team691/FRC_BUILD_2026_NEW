@@ -8,27 +8,18 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+// import com.revrobotics.spark.SparkBase.PersistMode;
+// import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.constants.Configs;
 import frc.robot.constants.Constants.ModuleConstants;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import static edu.wpi.first.units.Units.Volts;
-
-import java.util.function.Consumer;
-
-import edu.wpi.first.units.VoltageUnit;
-// import edu.wpi.first.units.Voltage;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.units.Measure;
 
 public class MAXSwerveModule implements Subsystem {
   private final SparkMax m_drivingSparkMax;
@@ -111,8 +102,8 @@ public class MAXSwerveModule implements Subsystem {
         new Rotation2d(m_turningEncoder.getPosition()));
 
     // Command driving and turning SPARKS MAX towards their respective setpoints.
-    m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, SparkMax.ControlType.kVelocity);
-    m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), SparkMax.ControlType.kPosition);
+    m_drivingPIDController.setSetpoint(optimizedDesiredState.speedMetersPerSecond, SparkMax.ControlType.kVelocity);
+    m_turningPIDController.setSetpoint(optimizedDesiredState.angle.getRadians(), SparkMax.ControlType.kPosition);
 
     m_desiredState = desiredState;
   }

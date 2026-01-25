@@ -198,6 +198,11 @@ public final class Constants {
     public static final double cooling = 0.3;
   }
 
+  public static final class LimelightConstants {
+    public static final String limelight_two = "limelight-2";
+    public static final String limelight_three = "limelight-3";
+  }
+
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 1.5;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;

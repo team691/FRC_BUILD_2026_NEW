@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Elastic.Notification;
@@ -38,6 +39,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 
 import frc.robot.utils.Elastic;
+import frc.robot.utils.LimelightHelpers;
 
 /* 
  * The DriveTrain class handles the drive subsystem of the robot.
@@ -45,10 +47,7 @@ import frc.robot.utils.Elastic;
  */
 public class DriveTrain extends SubsystemBase {
   private static final DriveTrain m_DriveTrain = new DriveTrain();
-  private static final Elastic m_elastic = new Elastic();
-  public final Notification ReZero = new Notification(NotificationLevel.INFO, "Reset Gyro", "Peak anime watch ep 15");
-
-  public final Notification notif = new Notification(NotificationLevel.INFO, "voltage", "sending voltage");
+  public final Notification ReZero = new Notification(NotificationLevel.INFO, "Reset Gyro", "Gyro has been reseted.");
   
   public static DriveTrain getInstance() {
       return m_DriveTrain;
@@ -90,7 +89,6 @@ public class DriveTrain extends SubsystemBase {
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
   private static RobotConfig config;
-  private double m_lastReZeroTime = -1.0;
 
   /* Odemetry tracks the robot pose utilizing the gyro
    * mainly used for field relativity
@@ -283,9 +281,9 @@ public class DriveTrain extends SubsystemBase {
       m_rearRight.getState());
   }
   
-  public Command ppTestFind() {
-    Pose2d targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));
-
+  public Command ppLLTestAlign() {
+    // Pose2d targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));
+    Pose2d targetPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LimelightConstants.limelight_two);
     PathConstraints constraints = new PathConstraints(
       3.0, 4.0,
      Units.degreesToRadians(540), Units.degreesToRadians(720)
@@ -299,10 +297,6 @@ public class DriveTrain extends SubsystemBase {
 
     return pathfindingCommand;
   }
-
-  // public void driveRobotRelative(ChassisSpeeds speeds){
-  //   this.drive(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond,true, true);
-  // }
 
   public void driveRobotRelative(ChassisSpeeds speeds) {
     this.drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, true);
@@ -344,12 +338,7 @@ public class DriveTrain extends SubsystemBase {
   // Zeros robot heading
   public void zeroHeading() {
     m_navx.reset();
-    // double now = WPIUtilJNI.now() * 1e-6;
-    // if (now - m_lastReZeroTime >= 1.0) {
-    //   m_elastic.sendNotification(ReZero);
-    //   m_lastReZeroTime = now;
-    // }
-    m_elastic.sendNotification(ReZero);
+    Elastic.sendNotification(ReZero);
   }
 
   public Command zeroAuotHeading() {
@@ -392,13 +381,10 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void voltageDrive(Voltage volts) {
-    // return (Voltage volts) -> {
       m_frontLeft.setVoltage(volts);
-      m_elastic.sendNotification(notif);
       m_frontRight.setVoltage(volts);
       m_rearLeft.setVoltage(volts);
       m_rearRight.setVoltage(volts);
-    // };
   }
 
   public void logSysId(SysIdRoutineLog log) {

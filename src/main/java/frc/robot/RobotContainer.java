@@ -1,31 +1,21 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Seconds;
 // import org.ironmaple.simulation.SimulatedArena;
 // import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 // import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 // import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.utils.Elastic.Notification;
-import frc.robot.utils.Elastic.NotificationLevel;
 
 import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.constants.Configs;
 import frc.robot.enums.RobotMode;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.LoggedPowerDistribution;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -107,14 +97,9 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Chooser", m_chooser);
 
-        m_chooser.addOption("Test PP", DriveTrain.getInstance().ppTestFind());
+        m_chooser.addOption("Test PP_LL AutoAlign", DriveTrain.getInstance().ppLLTestAlign());
 
         SmartDashboard.putData("Field", field);
-        // SmartDashboard.putData("PDP", m_pdp);
-
-        // // get currents for different channels
-        // double current7 = m_pdp.getCurrent(7);
-        // SmartDashboard.putNumber("Current Channel 7", current7);
 
       // Ignore controller warnings
       DriverStation.silenceJoystickConnectionWarning(true);
