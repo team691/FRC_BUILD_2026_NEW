@@ -35,7 +35,7 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private static final RobotMode JAVA_SIM_MODE = RobotMode.SIM;
   public static final RobotMode CURRENT_ROBOT_MODE = isReal() ? RobotMode.REAL : JAVA_SIM_MODE;
-  private boolean SetToCorrectPosition = false;
+  // private boolean SetToCorrectPosition = false;
   private RobotContainer m_robotContainer;
   private final AHRS m_navx = new AHRS(NavXComType.kMXP_SPI);
   private static final Notification teleop = new Notification(NotificationLevel.INFO, "Teleop Mode", "Teleoperated mode activated");
@@ -183,9 +183,9 @@ public class Robot extends LoggedRobot {
 
  /** This function is called periodically whilst in simulation. */
 //  @Override
-//  public void simulationPeriodic() {
-//      m_robotContainer.updateSimulation();
-//  }
+ public void simulationPeriodic() {
+     m_robotContainer.updateSimulation();
+ }
 }
 
 // ping 172.22.11.2

@@ -1,9 +1,13 @@
 package frc.robot;
 
-// import org.ironmaple.simulation.SimulatedArena;
-// import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
-// import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
-// import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
+import static edu.wpi.first.units.Units.Seconds;
+
+import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
+import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
+import org.littletonrobotics.junction.LoggedPowerDistribution;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -14,8 +18,14 @@ import frc.robot.subsystems.DriveTrain;
 import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.enums.RobotMode;
+
+import edu.wpi.first.wpilibj.PowerDistribution;
+import frc.robot.constants.Configs;
+import org.littletonrobotics.junction.Logger;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -28,7 +38,7 @@ import frc.robot.enums.RobotMode;
 public class RobotContainer {
   // The robot's subsystems
     private static final RobotMode JAVA_SIM_MODE = RobotMode.SIM;
-    // public final LoggedPowerDistribution powerDistribution;
+    public final LoggedPowerDistribution powerDistribution;
     // private final PowerDistribution m_pdp = new PowerDistribution();
 
     // The driver's controller
@@ -36,7 +46,7 @@ public class RobotContainer {
     
     // Initialize Sendable Chooser
     private final SendableChooser<Command> m_chooser;
-    // private final SwerveDriveSimulation driveSimulation;
+    private final SwerveDriveSimulation driveSimulation;
 
     private final Field2d field = new Field2d();
     /**
@@ -50,50 +60,50 @@ public class RobotContainer {
           : stream
       );
       
-      // switch (Robot.CURRENT_ROBOT_MODE) {
-      //       case REAL -> {
-      //           // Real robot, instantiate hardware IO implementations
-      //           driveSimulation = null;
+      switch (Robot.CURRENT_ROBOT_MODE) {
+            case REAL -> {
+                // Real robot, instantiate hardware IO implementations
+                driveSimulation = null;
 
-      //           powerDistribution = LoggedPowerDistribution.getInstance(1, PowerDistribution.ModuleType.kRev);
+                powerDistribution = LoggedPowerDistribution.getInstance(1, PowerDistribution.ModuleType.kRev);
 
-      //           /* CTRE Chassis: */
+                /* CTRE Chassis: */
 
-      //       }
+            }
 
-      //       case SIM -> {
-      //           SimulatedArena.overrideSimulationTimings(
-      //                   Seconds.of(0.02), Configs.DriveTrainConstants.SIMULATION_TICKS_IN_1_PERIOD);
-      //           this.driveSimulation = new SwerveDriveSimulation(
-      //                   DriveTrainSimulationConfig.Default()
-      //                           .withRobotMass(Configs.DriveTrainConstants.ROBOT_MASS)
-      //                           .withBumperSize(Configs.DriveTrainConstants.BUMPER_LENGTH, Configs.DriveTrainConstants.BUMPER_WIDTH)
-      //                           .withTrackLengthTrackWidth(
-      //                                   Configs.DriveTrainConstants.TRACK_LENGTH, Configs.DriveTrainConstants.TRACK_WIDTH)
-      //                           .withSwerveModule(new SwerveModuleSimulationConfig(
-      //                                   Configs.DriveTrainConstants.DRIVE_MOTOR_MODEL,
-      //                                   Configs.DriveTrainConstants.STEER_MOTOR_MODEL,
-      //                                   Configs.DriveTrainConstants.DRIVE_GEAR_RATIO,
-      //                                   Configs.DriveTrainConstants.STEER_GEAR_RATIO,
-      //                                   Configs.DriveTrainConstants.DRIVE_FRICTION_VOLTAGE,
-      //                                   Configs.DriveTrainConstants.STEER_FRICTION_VOLTAGE,
-      //                                   Configs.DriveTrainConstants.WHEEL_RADIUS,
-      //                                   Configs.DriveTrainConstants.STEER_INERTIA,
-      //                                   Configs.DriveTrainConstants.WHEEL_COEFFICIENT_OF_FRICTION))
-      //                           .withGyro(Configs.DriveTrainConstants.gyroSimulationFactory),
-      //                   new Pose2d(3, 3, new Rotation2d()));
-      //           SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
+            case SIM -> {
+                SimulatedArena.overrideSimulationTimings(
+                        Seconds.of(0.02), Configs.DriveTrainConstants.SIMULATION_TICKS_IN_1_PERIOD);
+                this.driveSimulation = new SwerveDriveSimulation(
+                        DriveTrainSimulationConfig.Default()
+                                .withRobotMass(Configs.DriveTrainConstants.ROBOT_MASS)
+                                .withBumperSize(Configs.DriveTrainConstants.BUMPER_LENGTH, Configs.DriveTrainConstants.BUMPER_WIDTH)
+                                .withTrackLengthTrackWidth(
+                                        Configs.DriveTrainConstants.TRACK_LENGTH, Configs.DriveTrainConstants.TRACK_WIDTH)
+                                .withSwerveModule(new SwerveModuleSimulationConfig(
+                                        Configs.DriveTrainConstants.DRIVE_MOTOR_MODEL,
+                                        Configs.DriveTrainConstants.STEER_MOTOR_MODEL,
+                                        Configs.DriveTrainConstants.DRIVE_GEAR_RATIO,
+                                        Configs.DriveTrainConstants.STEER_GEAR_RATIO,
+                                        Configs.DriveTrainConstants.DRIVE_FRICTION_VOLTAGE,
+                                        Configs.DriveTrainConstants.STEER_FRICTION_VOLTAGE,
+                                        Configs.DriveTrainConstants.WHEEL_RADIUS,
+                                        Configs.DriveTrainConstants.STEER_INERTIA,
+                                        Configs.DriveTrainConstants.WHEEL_COEFFICIENT_OF_FRICTION))
+                                .withGyro(Configs.DriveTrainConstants.gyroSimulationFactory),
+                        new Pose2d(3, 3, new Rotation2d()));
+                SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
 
-      //           powerDistribution = LoggedPowerDistribution.getInstance();
-      //           // Sim robot, instantiate physics sim IO implementations
-      //           SimulatedArena.getInstance().resetFieldForAuto();
-      //       }
+                powerDistribution = LoggedPowerDistribution.getInstance();
+                // Sim robot, instantiate physics sim IO implementations
+                SimulatedArena.getInstance().resetFieldForAuto();
+            }
 
-      //       default -> {
-      //         driveSimulation = null;
-      //         powerDistribution = LoggedPowerDistribution.getInstance();
-      //       }
-      //   }
+            default -> {
+              driveSimulation = null;
+              powerDistribution = LoggedPowerDistribution.getInstance();
+            }
+        }
 
         SmartDashboard.putData("Auto Chooser", m_chooser);
 
@@ -105,23 +115,23 @@ public class RobotContainer {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
 
-  //   public void resetSimulationField() {
-  //     if (!Robot.isSimulation()) return;
+    public void resetSimulationField() {
+      if (!Robot.isSimulation()) return;
 
-  //     DriveTrain.getInstance().resetOdometry(new Pose2d(3, 3, new Rotation2d()));
-  //     SimulatedArena.getInstance().resetFieldForAuto();
-  // }
+      DriveTrain.getInstance().resetOdometry(new Pose2d(3, 3, new Rotation2d()));
+      SimulatedArena.getInstance().resetFieldForAuto();
+  }
 
-  // public void updateSimulation() {
-  //     if (!Robot.isSimulation()) return;
+  public void updateSimulation() {
+      if (!Robot.isSimulation()) return;
 
-  //     SimulatedArena.getInstance().simulationPeriodic();
-  //     Logger.recordOutput("FieldSimulation/RobotPosition", driveSimulation.getSimulatedDriveTrainPose());
-  //     Logger.recordOutput(
-  //             "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
-  //     Logger.recordOutput(
-  //             "FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
-  // }
+      SimulatedArena.getInstance().simulationPeriodic();
+      org.littletonrobotics.junction.Logger.recordOutput("FieldSimulation/RobotPosition", driveSimulation.getSimulatedDriveTrainPose());
+      Logger.recordOutput(
+              "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
+      Logger.recordOutput(
+              "FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+  }
   /* 
    * Use this to pass the autonomous command to the main {@link Robot} class.
    * @return the command to run in autonomous

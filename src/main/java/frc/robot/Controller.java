@@ -15,7 +15,6 @@ public class Controller extends SubsystemBase{
     Joystick m_joystick1 = new Joystick(0);
     Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
     XboxController m_controller = new XboxController(2);
-    // Limelight m_lime = new Limelight(DriveTrain.getInstance());
 
     boolean shouldRunBelt = true;
     boolean isPressed = false;
