@@ -199,8 +199,8 @@ public final class Constants {
   }
 
   public static final class LimelightConstants {
-    public static final String limelight_two = "limelight-2";
-    public static final String limelight_three = "limelight-3";
+    public static final String limelight_two = "limelight-two";
+    public static final String limelight_three = "limelight-three";
   }
 
   public static final class AutoConstants {

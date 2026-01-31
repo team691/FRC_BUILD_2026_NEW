@@ -27,6 +27,8 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.constants.Configs;
 import org.littletonrobotics.junction.Logger;
 
+import dev.doglog.DogLog;
+
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -54,6 +56,9 @@ public class RobotContainer {
      */
     public RobotContainer() {
       boolean isCompetition = false;
+      DogLog.forceNt.log("ExampleLog/TuMadre", 0.676767);
+      DogLog.log("ExampleLog/testnoforceNt", 6.7);
+      DogLog.forceNt.log("ExampleLog/StringTest", "hello world");
       m_chooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
         (stream) -> isCompetition
           ? stream.filter(auto -> auto.getName().startsWith("comp"))

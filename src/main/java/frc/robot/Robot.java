@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.enums.RobotMode;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.utils.Elastic;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.Elastic.Notification;
@@ -125,7 +124,7 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    DriveTrain.getInstance().zeroHeading();
+    // DriveTrain.getInstance().zeroHeading();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
