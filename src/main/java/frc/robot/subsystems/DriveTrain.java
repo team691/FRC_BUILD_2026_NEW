@@ -38,9 +38,11 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 
 import frc.robot.utils.Elastic;
 import frc.robot.utils.LimelightHelpers;
+import frc.robot.utils.LocalADStarAK;
 
 /* 
  * The DriveTrain class handles the drive subsystem of the robot.
@@ -156,6 +158,7 @@ public class DriveTrain extends SubsystemBase {
       },
       this // Reference to this subsystem to set requirements
     );
+    Pathfinding.setPathfinder(new LocalADStarAK());
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();

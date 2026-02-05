@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.enums.RobotMode;
 import frc.robot.utils.Elastic;
 import frc.robot.utils.LimelightHelpers;
@@ -53,7 +54,7 @@ public class Robot extends LoggedRobot {
     }
 
     // Set up data receivers & replay source
-    LimelightHelpers.setCameraPose_RobotSpace("limelight", 
+    LimelightHelpers.setCameraPose_RobotSpace(LimelightConstants.limelight_three, 
       0.5, 0.0, 0.5,  // forward, side, up (meters)
       0.0, 30.0, 0.0  // roll, pitch, yaw (degrees)
     );
@@ -161,7 +162,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    m_robotContainer.llDetectTest();
+  }
 
   @Override
   public void testInit() {

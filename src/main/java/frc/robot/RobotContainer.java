@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.utils.LimelightHelpers;
 
 import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -25,6 +26,8 @@ import frc.robot.enums.RobotMode;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.constants.Configs;
+import frc.robot.constants.Constants.LimelightConstants;
+
 import org.littletonrobotics.junction.Logger;
 
 import dev.doglog.DogLog;
@@ -136,6 +139,11 @@ public class RobotContainer {
               "FieldSimulation/Coral", SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
       Logger.recordOutput(
               "FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+  }
+
+  public void llDetectTest() {
+    DogLog.forceNt.log("Limelight/raw_detect", LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
+    System.out.println(LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
   }
   /* 
    * Use this to pass the autonomous command to the main {@link Robot} class.
