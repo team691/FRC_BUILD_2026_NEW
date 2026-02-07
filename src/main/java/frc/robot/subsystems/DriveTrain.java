@@ -21,12 +21,15 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.utils.SwerveUtils;
+import frc.robot.utils.estimatePose;
 import frc.robot.utils.Elastic.Notification;
 import frc.robot.utils.Elastic.NotificationLevel;
 import frc.robot.utils.LimelightHelpers.RawDetection;
 // Position imports
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
@@ -287,6 +290,35 @@ public class DriveTrain extends SubsystemBase {
       m_frontRight.getState(),
       m_rearLeft.getState(),
       m_rearRight.getState());
+  }
+
+  public final Pose2d estimateTargetPose(Pose2d robotPose, double txDeg, double tyDeg, double ta) {
+    double distance = 0.0; // figure out distance thing
+    double headingOffsetRad = Math.toRadians(txDeg);
+
+    double xRobot = distance * Math.cos(headingOffsetRad);
+    double yRobot = distance * Math.sin(headingOffsetRad);
+
+    Transform2d robotToTarget = 
+        new Transform2d(new Translation2d(xRobot, yRobot), new Rotation2d(headingOffsetRad));
+
+    return robotPose.transformBy(robotToTarget);
+    }
+
+  public Command pathplannerObjAlign() {
+    Pose2d currPose = LimelightHelpers.getBotPose2d_wpiBlue(LimelightConstants.limelight_three);
+    LimelightHelpers.RawDetection[] m_object = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
+
+    Pose2d goalPose = estimateTargetPose(currPose, m_object[0].txnc, m_object[0].tync, m_object[0].ta);
+
+    PathConstraints constraints = new PathConstraints(
+      3.0, 4.0,
+     Units.degreesToRadians(540), Units.degreesToRadians(720)
+    );
+
+    Command pathToObjectCommand = AutoBuilder.pathfindToPose(goalPose, constraints);
+
+    return pathToObjectCommand;
   }
   
   public Command ppLLTestAlign() {

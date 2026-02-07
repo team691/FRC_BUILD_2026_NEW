@@ -120,6 +120,8 @@ public class RobotContainer {
 
         SmartDashboard.putData("Field", field);
 
+        m_chooser.addOption("Fuel Object Detection Align", DriveTrain.getInstance().pathplannerObjAlign());
+
       // Ignore controller warnings
       DriverStation.silenceJoystickConnectionWarning(true);
     }
@@ -144,14 +146,14 @@ public class RobotContainer {
 
   public LimelightHelpers.RawDetection[] llDetectTest() {
     RawDetection[] m_detect = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
+    for (RawDetection detection : m_detect) {
+      System.out.println("Class: " + detection.classId);
+      System.out.println("TA" + detection.ta);
+      System.out.println("TX" + detection.txnc);
+      System.out.println("TY" + detection.tync);
+    }
     return m_detect;
     // System.out.println("Neural Class ID" + LimelightHelpers.getNeuralClassID(LimelightConstants.limelight_three));
-
-    // for (RawDetection detection : m_detect) {
-    //   System.out.println("Class: " + detection.classId);
-    //   System.out.println("TA" + detection.ta);
-    //   System.out.println("TX" + detection.txnc);
-    //   System.out.println("TY" + detection.tync);
     }
 
   public double getObjDist(LimelightHelpers.RawDetection[] rawObjDetections) {

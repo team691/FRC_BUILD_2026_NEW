@@ -95,7 +95,7 @@ public class Controller extends SubsystemBase{
 
     @Override
     public void periodic() {
-          LimelightHelpers.RawDetection[] detections = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
-          System.out.println(detections);
+        //   LimelightHelpers.RawDetection[] detections = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
+        //   System.out.println(detections);
     }
 }
