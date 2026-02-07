@@ -21,7 +21,6 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.utils.SwerveUtils;
-import frc.robot.utils.estimatePose;
 import frc.robot.utils.Elastic.Notification;
 import frc.robot.utils.Elastic.NotificationLevel;
 import frc.robot.utils.LimelightHelpers.RawDetection;
@@ -293,7 +292,8 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public final Pose2d estimateTargetPose(Pose2d robotPose, double txDeg, double tyDeg, double ta) {
-    double distance = 0.0; // figure out distance thing
+    double distance = (LimelightConstants.cameraHeight - LimelightConstants.targetHeight)/Math.tan(LimelightConstants.mountAngle + tyDeg); // figure out distance thing
+    // (target height - camera height)/tan(limelight moutning angle + ty)
     double headingOffsetRad = Math.toRadians(txDeg);
 
     double xRobot = distance * Math.cos(headingOffsetRad);

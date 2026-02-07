@@ -155,28 +155,6 @@ public class RobotContainer {
     return m_detect;
     // System.out.println("Neural Class ID" + LimelightHelpers.getNeuralClassID(LimelightConstants.limelight_three));
     }
-
-  public double getObjDist(LimelightHelpers.RawDetection[] rawObjDetections) {
-    double distance = 0.0;
-    for (LimelightHelpers.RawDetection obj : rawObjDetections) {
-      double obj_ta = obj.ta;
-      double obj_tx = obj.txnc;
-      double obj_ty = obj.tync;
-
-      double angleToGoalDeg = LimelightConstants.mountAngle + obj_ty;
-      double angleToGoalRad = Math.toRadians(angleToGoalDeg);
-
-      Pose2d robotPose = LimelightHelpers.getBotPose2d(LimelightConstants.limelight_three);
-
-      distance = (LimelightConstants.goalHeight - LimelightConstants.mountHeight)/Math.tan(angleToGoalRad);
-
-      System.out.println("POsisbel distance" + distance);
-
-      return distance;
-    }
-
-    return distance;
-  }
     // DogLog.forceNt.log("Limelight/raw_detect", LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
     // System.out.println(m_detect.getClass());
 
