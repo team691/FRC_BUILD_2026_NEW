@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.PoseEstimate;
@@ -67,6 +68,7 @@ public class AutoAlign extends Command {
         tagLostTimer.reset();  // reset lost tag timer because we see a tag
 
         // Use robot pose relative to target — more stable
+        // PoseEstimate currentPose = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.limelight_three);
         PoseEstimate currentPose = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightStream);
 
         // Target pose is fixed relative to tag

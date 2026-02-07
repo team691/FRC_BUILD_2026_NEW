@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utils.LimelightHelpers;
+import frc.robot.utils.LimelightHelpers.RawDetection;
 
 import com.pathplanner.lib.events.EventTrigger;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -141,10 +142,45 @@ public class RobotContainer {
               "FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
   }
 
-  public void llDetectTest() {
-    DogLog.forceNt.log("Limelight/raw_detect", LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
-    System.out.println(LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
+  public LimelightHelpers.RawDetection[] llDetectTest() {
+    RawDetection[] m_detect = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
+    return m_detect;
+    // System.out.println("Neural Class ID" + LimelightHelpers.getNeuralClassID(LimelightConstants.limelight_three));
+
+    // for (RawDetection detection : m_detect) {
+    //   System.out.println("Class: " + detection.classId);
+    //   System.out.println("TA" + detection.ta);
+    //   System.out.println("TX" + detection.txnc);
+    //   System.out.println("TY" + detection.tync);
+    }
+
+  public double getObjDist(LimelightHelpers.RawDetection[] rawObjDetections) {
+    double distance = 0.0;
+    for (LimelightHelpers.RawDetection obj : rawObjDetections) {
+      double obj_ta = obj.ta;
+      double obj_tx = obj.txnc;
+      double obj_ty = obj.tync;
+
+      double angleToGoalDeg = LimelightConstants.mountAngle + obj_ty;
+      double angleToGoalRad = Math.toRadians(angleToGoalDeg);
+
+      Pose2d robotPose = LimelightHelpers.getBotPose2d(LimelightConstants.limelight_three);
+
+      distance = (LimelightConstants.goalHeight - LimelightConstants.mountHeight)/Math.tan(angleToGoalRad);
+
+      System.out.println("POsisbel distance" + distance);
+
+      return distance;
+    }
+
+    return distance;
   }
+    // DogLog.forceNt.log("Limelight/raw_detect", LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
+    // System.out.println(m_detect.getClass());
+
+    // System.out.println(LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
+    
+  // }
   /* 
    * Use this to pass the autonomous command to the main {@link Robot} class.
    * @return the command to run in autonomous

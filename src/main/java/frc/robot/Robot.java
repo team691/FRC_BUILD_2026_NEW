@@ -163,7 +163,6 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.llDetectTest();
   }
 
   @Override
@@ -176,6 +175,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+    m_robotContainer.llDetectTest();
     //m_lights.Red();
   }
   /** This function is called once when the robot is first started up. */
