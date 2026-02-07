@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.constants.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.utils.LimelightHelpers;
 import frc.robot.commands.AutoAlign;
 
 public class Controller extends SubsystemBase{
@@ -93,6 +95,7 @@ public class Controller extends SubsystemBase{
 
     @Override
     public void periodic() {
-
+          LimelightHelpers.RawDetection[] detections = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
+          System.out.println(detections);
     }
 }

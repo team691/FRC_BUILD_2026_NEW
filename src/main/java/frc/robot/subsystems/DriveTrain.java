@@ -19,9 +19,11 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.constants.Constants;
 import frc.robot.constants.Constants.DriveConstants;
+import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Elastic.Notification;
 import frc.robot.utils.Elastic.NotificationLevel;
+import frc.robot.utils.LimelightHelpers.RawDetection;
 // Position imports
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -124,6 +126,8 @@ public class DriveTrain extends SubsystemBase {
       // m_DriveTrain, 
       "Mechanism_Characteristic")
   );
+
+  String m_detectclass = LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three);
 
   // Creates new Drive Subsystem
   private DriveTrain() {
@@ -287,6 +291,7 @@ public class DriveTrain extends SubsystemBase {
   
   public Command ppLLTestAlign() {
     // Pose2d targetPose;
+    // public static RawDetection[] getRawDetections(LimelightConstants.limelight_three);
     Pose2d targetPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LimelightConstants.limelight_two);
     // Pose2d targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));;
     // try {
