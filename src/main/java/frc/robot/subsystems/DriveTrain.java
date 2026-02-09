@@ -23,7 +23,6 @@ import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Elastic.Notification;
 import frc.robot.utils.Elastic.NotificationLevel;
-import frc.robot.utils.LimelightHelpers.RawDetection;
 // Position imports
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
