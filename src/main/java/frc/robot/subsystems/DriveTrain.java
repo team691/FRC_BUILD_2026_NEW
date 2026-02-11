@@ -304,21 +304,21 @@ public class DriveTrain extends SubsystemBase {
     return robotPose.transformBy(robotToTarget);
     }
 
-  public Command pathplannerObjAlign() {
-    Pose2d currPose = LimelightHelpers.getBotPose2d_wpiBlue(LimelightConstants.limelight_three);
-    LimelightHelpers.RawDetection[] m_object = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
+  // public Command pathplannerObjAlign() {
+  //   Pose2d currPose = LimelightHelpers.getBotPose2d_wpiBlue(LimelightConstants.limelight_three);
+  //   LimelightHelpers.RawDetection[] m_object = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
 
-    Pose2d goalPose = estimateTargetPose(currPose, m_object[0].txnc, m_object[0].tync, m_object[0].ta);
+  //   Pose2d goalPose = estimateTargetPose(currPose, m_object[0].txnc, m_object[0].tync, m_object[0].ta);
 
-    PathConstraints constraints = new PathConstraints(
-      3.0, 4.0,
-     Units.degreesToRadians(540), Units.degreesToRadians(720)
-    );
+  //   PathConstraints constraints = new PathConstraints(
+  //     3.0, 4.0,
+  //    Units.degreesToRadians(540), Units.degreesToRadians(720)
+  //   );
 
-    Command pathToObjectCommand = AutoBuilder.pathfindToPose(goalPose, constraints);
+  //   Command pathToObjectCommand = AutoBuilder.pathfindToPose(goalPose, constraints);
 
-    return pathToObjectCommand;
-  }
+  //   return pathToObjectCommand;
+  // }
   
   public Command ppLLTestAlign() {
     // Pose2d targetPose;

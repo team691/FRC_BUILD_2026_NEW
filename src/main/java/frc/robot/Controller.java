@@ -18,9 +18,6 @@ public class Controller extends SubsystemBase{
     Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
     XboxController m_controller = new XboxController(2);
 
-    boolean shouldRunBelt = true;
-    boolean isPressed = false;
-    boolean isBeltOn = false;
     // values will be between 0 and 1 in this map
     private double[] PowerMap =
     {

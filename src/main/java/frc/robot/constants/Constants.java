@@ -2,6 +2,8 @@ package frc.robot.constants;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 // Imports
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -219,6 +221,12 @@ public final class Constants {
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+  }
+
+  public static final class FieldPoseConstants {
+    // edit all of these constants based off of pathplanner
+    public static final Pose2d rightHubShooterAlign = new Pose2d(3.1, 3.1, Rotation2d.fromDegrees(90));
+    public static final Pose2d centerHubShooterAlign = new Pose2d(2.1, 2.1, Rotation2d.fromDegrees(0));
   }
 
   public static final class ShooterConstants{
