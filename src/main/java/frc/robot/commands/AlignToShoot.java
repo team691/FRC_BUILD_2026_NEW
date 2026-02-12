@@ -30,7 +30,7 @@ public class AlignToShoot extends Command {
 
     public Pose2d findClosestPose2d() {
         // idea is to have a couple of in built poses, find the closest pose to current robot position for shooting and return it
-        Pose2d[] posesArray = {FieldPoseConstants.centerHubShooterAlign, FieldPoseConstants.rightHubShooterAlign};
+        Pose2d[] posesArray = {FieldPoseConstants.blueLeftHubShooterAlign, FieldPoseConstants.blueCenterHubShooterAlign, FieldPoseConstants.blueRightHubShooterAlign, FieldPoseConstants.redLeftHubShooterAlign, FieldPoseConstants.redCenterHubShooterAlign, FieldPoseConstants.redRightHubShooterAlign};
         Pose2d currPose = drivebase.getPose();
 
         double bestDist = Double.POSITIVE_INFINITY;

@@ -225,8 +225,12 @@ public final class Constants {
 
   public static final class FieldPoseConstants {
     // edit all of these constants based off of pathplanner
-    public static final Pose2d rightHubShooterAlign = new Pose2d(3.1, 3.1, Rotation2d.fromDegrees(90));
-    public static final Pose2d centerHubShooterAlign = new Pose2d(2.1, 2.1, Rotation2d.fromDegrees(0));
+    public static final Pose2d blueLeftHubShooterAlign = new Pose2d(3, 6, Rotation2d.fromDegrees(315));
+    public static final Pose2d blueCenterHubShooterAlign = new Pose2d(2.5, 4, Rotation2d.fromDegrees(180));
+    public static final Pose2d blueRightHubShooterAlign = new Pose2d(3, 2, Rotation2d.fromDegrees(45));
+    public static final Pose2d redRightHubShooterAlign = new Pose2d(14, 6, Rotation2d.fromDegrees(225));
+    public static final Pose2d redCenterHubShooterAlign = new Pose2d(14, 4, Rotation2d.fromDegrees(180));
+    public static final Pose2d redLeftHubShooterAlign = new Pose2d(14, 2, Rotation2d.fromDegrees(135));
   }
 
   public static final class ShooterConstants{
