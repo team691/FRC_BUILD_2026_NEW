@@ -40,16 +40,18 @@ public class Controller extends SubsystemBase{
             return 2.0; // 9.0
         }
         else {
-            return 8.0; // 2.0
+            return 15.0; // 2.0
         }
     }
+    
     public Controller (){
         DriveTrain.getInstance().setDefaultCommand(new RunCommand(
               () -> DriveTrain.getInstance().drive(
                   
                   ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
                   ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
-                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
+                //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
+                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
                   true, true),
               DriveTrain.getInstance()));
         //buttonBoard.SetupButtons();
