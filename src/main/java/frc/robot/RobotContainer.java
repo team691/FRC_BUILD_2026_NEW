@@ -9,6 +9,8 @@ import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 import org.littletonrobotics.junction.LoggedPowerDistribution;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,12 +20,11 @@ import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.RawDetection;
 
 import com.pathplanner.lib.events.EventTrigger;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.enums.RobotMode;
+// import frc.robot.enums.RobotMode;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.commands.AlignToShoot;
@@ -44,9 +45,8 @@ import dev.doglog.DogLog;
 
 public class RobotContainer {
   // The robot's subsystems
-    private static final RobotMode JAVA_SIM_MODE = RobotMode.SIM;
+    // private static final RobotMode JAVA_SIM_MODE = RobotMode.SIM;
     public final LoggedPowerDistribution powerDistribution;
-    // private final PowerDistribution m_pdp = new PowerDistribution();
 
     // The driver's controller
     public final Controller controller = new Controller();
@@ -120,6 +120,10 @@ public class RobotContainer {
         m_chooser.addOption("Test PP_LL AutoAlign", DriveTrain.getInstance().ppLLTestAlign());
 
         SmartDashboard.putData("Field", field);
+
+        // Pathplanner Registered Event Markers
+        new EventTrigger("test_pose_align_shoot").whileTrue(AlignToShoot.getInstance());
+        NamedCommands.registerCommand("test_pose_align_shoot", AlignToShoot.getInstance());
 
         // m_chooser.addOption("Fuel Object Detection Align", DriveTrain.getInstance().pathplannerObjAlign());
 

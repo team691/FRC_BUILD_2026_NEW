@@ -54,6 +54,10 @@ import frc.robot.utils.LocalADStarAK;
 public class DriveTrain extends SubsystemBase {
   private static final DriveTrain m_DriveTrain = new DriveTrain();
   public final Notification ReZero = new Notification(NotificationLevel.INFO, "Reset Gyro", "Gyro has been reseted.");
+
+  // Limelight Configuration for global pose estimator
+  LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.limelight_three);
+  public boolean doRejectUpdate = false;
   
   public static DriveTrain getInstance() {
       return m_DriveTrain;
@@ -181,6 +185,16 @@ public class DriveTrain extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+    if (Math.abs(m_navx.getRate()) > 360) {
+      doRejectUpdate = true;
+    }
+    if (mt2.tagCount == 0) {
+      doRejectUpdate = true;
+    }
+    if (!doRejectUpdate) {
+      
+    }
   }
 
 //   // Returns estimated robot pose

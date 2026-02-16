@@ -38,6 +38,7 @@ public class Robot extends LoggedRobot {
   // private boolean SetToCorrectPosition = false;
   private RobotContainer m_robotContainer;
   private final AHRS m_navx = new AHRS(NavXComType.kMXP_SPI);
+  private final Vision m_vision = new Vision();
   private static final Notification teleop = new Notification(NotificationLevel.INFO, "Teleop Mode", "Teleoperated mode activated");
   public Notification auto = new Notification(NotificationLevel.INFO, "Auto Mode", "Autonomous mode activated");
   /**
@@ -52,6 +53,9 @@ public class Robot extends LoggedRobot {
       //Note: Add code to send path to Shuffleboard as per the Alliance color and location
       // SmartDashboard.putData();
     }
+
+    m_navx.reset(); // reset parameters yaw, pitch, roll
+    m_navx.zeroYaw(); // setting zero yaw
 
     // Set up data receivers & replay source
     LimelightHelpers.setCameraPose_RobotSpace(LimelightConstants.limelight_three, 
@@ -97,13 +101,14 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotPeriodic() {
-    double robotYaw = m_navx.getYaw();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     Logger.recordOutput("RobotPose", new Pose2d());
-    LimelightHelpers.SetRobotOrientation("limelight", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+    
+    // LimelightHelpers.SetRobotOrientation("limelight", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+    m_vision.setRobotOrientation(m_navx.getYaw(), m_navx.getRate(), m_navx.getPitch(), m_navx.getRawGyroX(), m_navx.getRate(), m_navx.getRawGyroY());
     
     CommandScheduler.getInstance().run();
   }
@@ -136,7 +141,8 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      // m_autonomousCommand.schedule();
+      CommandScheduler.getInstance().schedule(m_autonomousCommand);
       Elastic.sendNotification(auto);
     }
   }

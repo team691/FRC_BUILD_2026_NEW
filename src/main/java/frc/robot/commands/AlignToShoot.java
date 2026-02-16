@@ -5,6 +5,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.constants.Constants.*;
 
@@ -15,6 +16,9 @@ public class AlignToShoot extends Command {
     public final DriveTrain drivebase;
 
     private Command pathCommand;
+
+    private static final AlignToShoot m_align = new AlignToShoot(DriveTrain.getInstance());
+    public static AlignToShoot getInstance() {return m_align;}
 
     public AlignToShoot(DriveTrain drivebase) {
         this.constraints = new PathConstraints(
@@ -54,7 +58,8 @@ public class AlignToShoot extends Command {
     public void initialize() {
         Pose2d targetPose = findClosestPose2d();
         pathCommand = AutoBuilder.pathfindToPose(targetPose, constraints, 0.0);
-        pathCommand.schedule();
+        // pathCommand.schedule();
+        CommandScheduler.getInstance().schedule(pathCommand);
     }
 
     @Override
