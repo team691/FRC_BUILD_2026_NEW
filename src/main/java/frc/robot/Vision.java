@@ -12,7 +12,7 @@ public class Vision implements Subsystem {
     public final SwerveDrivePoseEstimator poseEstimator;
 
     public Vision() {
-        mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue(LimelightConstants.limelight_three);
+        mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.limelight_three);
         poseEstimator = new SwerveDrivePoseEstimator(null, null, null, globalPose);
     }
 
@@ -22,6 +22,6 @@ public class Vision implements Subsystem {
     }
 
     public void globalPoseEstimator() {
-        
+
     }
 }
