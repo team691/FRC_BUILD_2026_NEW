@@ -202,6 +202,19 @@ public class DriveTrain extends SubsystemBase {
      return m_odometry.getPoseMeters();
    }
 
+   public Rotation2d getGyroRotation() {
+    return Rotation2d.fromDegrees(m_navx.getYaw());
+   }
+
+   public SwerveModulePosition[] getSwerveModulePositions() {
+      return new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+      };
+   }
+
 // Resets odometry to a specific pose
   public void resetOdometry(Pose2d pose) {
       m_odometry.resetPosition(

@@ -88,8 +88,6 @@ public class Robot extends LoggedRobot {
       // Start AdvantageKit logger
       Logger.start();
     m_robotContainer = new RobotContainer();
-    
-    Logger.start();
   }
 
   /**
@@ -108,7 +106,8 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput("RobotPose", new Pose2d());
     
     // LimelightHelpers.SetRobotOrientation("limelight", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
-    m_vision.setRobotOrientation(m_navx.getYaw(), m_navx.getRate(), m_navx.getPitch(), m_navx.getRawGyroX(), m_navx.getRate(), m_navx.getRawGyroY());
+    m_vision.setRobotOrientation(m_navx.getYaw(), 0.0, 0.0, 0.0, 0.0, 0.0);
+    // m_vision.setRobotOrientation(m_navx.getYaw(), m_navx.getRate(), m_navx.getPitch(), m_navx.getRawGyroX(), m_navx.getRate(), m_navx.getRawGyroY());
     
     CommandScheduler.getInstance().run();
   }
@@ -169,6 +168,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    System.out.println("limelight pose estimator thing: " + m_vision.globalPoseEstimator());
   }
 
   @Override
