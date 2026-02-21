@@ -2,6 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.subsystems.DriveTrain;
@@ -32,6 +36,31 @@ public class Vision implements Subsystem {
     }
 
     public Pose2d globalPoseEstimator() {
+        poseEstimator.addVisionMeasurement(mt2.pose, mt2.timestampSeconds);
         return poseEstimator.getEstimatedPosition();
     }
+
+    public final Pose2d estimateTargetPose(Pose2d robotPose, double txDeg, double tyDeg, double ta) {
+        double distance = (LimelightConstants.cameraHeight - LimelightConstants.targetHeight)/Math.tan(LimelightConstants.mountAngle + tyDeg); // figure out distance thing
+        // (target height - camera height)/tan(limelight moutning angle + ty)
+        double headingOffsetRad = Math.toRadians(txDeg);
+
+        double xRobot = distance * Math.cos(headingOffsetRad);
+        double yRobot = distance * Math.sin(headingOffsetRad);
+
+        Transform2d robotToTarget = 
+            new Transform2d(new Translation2d(xRobot, yRobot), new Rotation2d(headingOffsetRad));
+
+        return robotPose.transformBy(robotToTarget);
+    }
+
+    // TODO: add method for driving directly to detected blob pose on photon vision
+    public Command colorBlobDrive() {
+
+        return null;
+    }
+
+    // TODO: test limelight localization code for global pose
+    // TODO: climber autoalignment to apriltag (offset primarily)
+    // TODO: reverse set gyro/reverse smth on robot?
 }

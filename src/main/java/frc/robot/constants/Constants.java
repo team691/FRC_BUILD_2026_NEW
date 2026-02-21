@@ -235,6 +235,12 @@ public final class Constants {
     public static final Pose2d redLeftHubShooterAlign = new Pose2d(14, 2, Rotation2d.fromDegrees(135));
   }
 
+  public static final class PhotonVisionConstants {
+    public static final double kPTurn = 0.1;
+    public static final double forwardSpeed = 2.0;
+    public static final double areaThreshold = 0.1;
+  }
+
   public static final class ShooterConstants{
     public static final int ShooterID = 9;
     public static final int PassThroughID = 10;

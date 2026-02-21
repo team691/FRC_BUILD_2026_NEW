@@ -26,8 +26,6 @@ import frc.robot.utils.Elastic.NotificationLevel;
 // Position imports
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
@@ -185,16 +183,6 @@ public class DriveTrain extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
-
-    if (Math.abs(m_navx.getRate()) > 360) {
-      doRejectUpdate = true;
-    }
-    if (mt2.tagCount == 0) {
-      doRejectUpdate = true;
-    }
-    if (!doRejectUpdate) {
-      
-    }
   }
 
 //   // Returns estimated robot pose
@@ -316,20 +304,6 @@ public class DriveTrain extends SubsystemBase {
       m_rearLeft.getState(),
       m_rearRight.getState());
   }
-
-  public final Pose2d estimateTargetPose(Pose2d robotPose, double txDeg, double tyDeg, double ta) {
-    double distance = (LimelightConstants.cameraHeight - LimelightConstants.targetHeight)/Math.tan(LimelightConstants.mountAngle + tyDeg); // figure out distance thing
-    // (target height - camera height)/tan(limelight moutning angle + ty)
-    double headingOffsetRad = Math.toRadians(txDeg);
-
-    double xRobot = distance * Math.cos(headingOffsetRad);
-    double yRobot = distance * Math.sin(headingOffsetRad);
-
-    Transform2d robotToTarget = 
-        new Transform2d(new Translation2d(xRobot, yRobot), new Rotation2d(headingOffsetRad));
-
-    return robotPose.transformBy(robotToTarget);
-    }
 
   // public Command pathplannerObjAlign() {
   //   Pose2d currPose = LimelightHelpers.getBotPose2d_wpiBlue(LimelightConstants.limelight_three);
