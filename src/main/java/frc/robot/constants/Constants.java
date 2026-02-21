@@ -239,6 +239,7 @@ public final class Constants {
     public static final double kPTurn = 0.1;
     public static final double forwardSpeed = 2.0;
     public static final double areaThreshold = 0.1;
+    public static final String cameraName = "HD_WebCam";
   }
 
   public static final class ShooterConstants{

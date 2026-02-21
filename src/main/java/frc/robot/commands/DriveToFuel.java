@@ -9,13 +9,16 @@ import frc.robot.subsystems.DriveTrain;
 public class DriveToFuel extends Command {
     // add PID controllers instead probably for fine-tuned control
     // use pose estimator from tx, ty, ta, values
-    
+
+
     private final DriveTrain m_drivetrain;
-    private final PhotonCamera camera;
+    private static final PhotonCamera camera = new PhotonCamera(PhotonVisionConstants.cameraName);
+
+    private static final DriveToFuel m_drivetofuel = new DriveToFuel(DriveTrain.getInstance(), camera);
+    public static DriveToFuel getInstance() {return m_drivetofuel; }
 
     public DriveToFuel(DriveTrain m_drivetrain, PhotonCamera camera) {
         this.m_drivetrain = m_drivetrain;
-        this.camera = camera;
 
         addRequirements(m_drivetrain);
     }

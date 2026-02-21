@@ -151,17 +151,17 @@ public class RobotContainer {
               "FieldSimulation/Algae", SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
   }
 
-  public LimelightHelpers.RawDetection[] llDetectTest() {
-    RawDetection[] m_detect = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
-    for (RawDetection detection : m_detect) {
-      System.out.println("Class: " + detection.classId);
-      System.out.println("TA" + detection.ta);
-      System.out.println("TX" + detection.txnc);
-      System.out.println("TY" + detection.tync);
-    }
-    return m_detect;
-    // System.out.println("Neural Class ID" + LimelightHelpers.getNeuralClassID(LimelightConstants.limelight_three));
-    }
+  // public LimelightHelpers.RawDetection[] llDetectTest() {
+  //   RawDetection[] m_detect = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
+  //   for (RawDetection detection : m_detect) {
+  //     System.out.println("Class: " + detection.classId);
+  //     System.out.println("TA" + detection.ta);
+  //     System.out.println("TX" + detection.txnc);
+  //     System.out.println("TY" + detection.tync);
+  //   }
+  //   return m_detect;
+  //   // System.out.println("Neural Class ID" + LimelightHelpers.getNeuralClassID(LimelightConstants.limelight_three));
+  //   }
     // DogLog.forceNt.log("Limelight/raw_detect", LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three));
     // System.out.println(m_detect.getClass());
 
