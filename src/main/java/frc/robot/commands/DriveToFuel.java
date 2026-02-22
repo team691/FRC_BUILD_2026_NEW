@@ -63,6 +63,26 @@ public class DriveToFuel extends Command {
         System.out.println("estimated target pose for ballsyness: " + estimatedPose);
     }
 
+    public void distToFuel() {
+        double dist = -1  ;
+        var result = camera.getLatestResult();
+        if (!result.hasTargets()) {
+            System.out.println("No Fuel detected");
+        } else {
+            
+            //Using the finished robot, we need to find the actual calibration constant
+            //see programming master doc for more details
+            
+            /*double k = knownDistance * Math.sqrt(target.getArea());
+
+            double distance = k / Math.sqrt(target.getArea());
+            double xPos = distance * Math.cos(Math.toRadians(target.getYaw()));
+            double yPos = distance * Math.sin(Math.toRadians(target.getYaw()));
+            */
+            System.out.println(dist);
+        }
+    }
+
     @Override
     public boolean isFinished() {
         var result = camera.getLatestResult();
@@ -78,4 +98,4 @@ public class DriveToFuel extends Command {
     public void end(boolean interrupted) {
         m_drivetrain.drive(0.0, 0.0, 0.0, false, false);
     }
-}
+   }

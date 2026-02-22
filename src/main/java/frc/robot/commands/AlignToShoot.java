@@ -39,6 +39,7 @@ public class AlignToShoot extends Command {
 
         double bestDist = Double.POSITIVE_INFINITY;
         int bestIndex = 0;
+        
 
         for (int i = 0; i < posesArray.length; i++) {
             double dist = posesArray[i].getTranslation().getDistance(currPose.getTranslation());
