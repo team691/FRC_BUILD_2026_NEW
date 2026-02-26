@@ -7,6 +7,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.Vision;
 import frc.robot.constants.Constants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -19,6 +20,8 @@ public class AlignToShoot extends Command {
 
     private static final AlignToShoot m_align = new AlignToShoot(DriveTrain.getInstance());
     public static AlignToShoot getInstance() {return m_align;}
+    private final Vision m_vision = new Vision();
+
 
     public AlignToShoot(DriveTrain drivebase) {
         this.constraints = new PathConstraints(
@@ -35,7 +38,7 @@ public class AlignToShoot extends Command {
     public Pose2d findClosestPose2d() {
         // idea is to have a couple of in built poses, find the closest pose to current robot position for shooting and return it
         Pose2d[] posesArray = {FieldPoseConstants.blueLeftHubShooterAlign, FieldPoseConstants.blueCenterHubShooterAlign, FieldPoseConstants.blueRightHubShooterAlign, FieldPoseConstants.redLeftHubShooterAlign, FieldPoseConstants.redCenterHubShooterAlign, FieldPoseConstants.redRightHubShooterAlign};
-        Pose2d currPose = drivebase.getPose();
+        Pose2d currPose = m_vision.globalPoseEstimator(); //drivebase.getPose()
 
         double bestDist = Double.POSITIVE_INFINITY;
         int bestIndex = 0;
