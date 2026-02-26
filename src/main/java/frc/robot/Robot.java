@@ -167,7 +167,10 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
+  
   public void teleopPeriodic() {
+    m_vision.runPosePeriodic();
+    m_vision.globalPoseEstimator();
     System.out.println("limelight pose estimator thing: " + m_vision.globalPoseEstimator());
   }
 

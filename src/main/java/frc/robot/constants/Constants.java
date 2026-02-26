@@ -204,7 +204,7 @@ public final class Constants {
 
   public static final class LimelightConstants {
     public static final String limelight_two = "limelight-two";
-    public static final String limelight_three = "limelight-three";
+    public static final String limelight_three = "limelight";
     public static final double cameraHeight = 0.5; // meters
     public static final double targetHeight = 2.41; // meters
     public static final double mountAngle = 30; // degrees
