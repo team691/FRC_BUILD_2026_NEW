@@ -29,19 +29,19 @@ public class Intake{
 
     public void moveIntakeUp() {
         intakeTalonMotor.set(0.5);
-        Timer.delay(1);
+        
         intakeTalonMotor.set(0);
     }
     
     public void moveIntakedown() {
         intakeTalonMotor.set(-0.5);
-        Timer.delay(1);
+        
         intakeTalonMotor.set(0);
     }
 
-    public void roll(){
+    public void runIntake(){
         intakeNeoMotor.set(0.5);
-        Timer.delay(10);
+        
         intakeNeoMotor.set(0);
 
     }

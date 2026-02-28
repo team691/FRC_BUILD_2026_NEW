@@ -1,0 +1,15 @@
+Update this file to add notes for later
+
+To Do:
+-"Intake.java" just make motors run, and the intake move up and down
+-Make sure that the buttonBoard code in "Buttons.java" and other subsystems are connected to it
+-"Climber.java" ensure that the motors can both forward and backwards, and we have specific positions set to move to
+-Once we get the actual shooter to work, we can finally test it, get the gear ratio and ensure that we can auto set power
+-Related to above, but ensure the shooter can automatically shoot at the right power depending on the distance from the hub it detects
+-Also, make a button binding for the robot to drive the intake (front of the robot, likely) towards the nearest detected ball [The code for this should be in "DriveToFuel.java"]
+
+2/28/2026
+-Climber.java added
+-Intake.java added::Both TalonFX and Neo motors added, need to get specific positions or other for precision
+-Buttons.java added::Set up for when we get other subsystems up
+-Shooter.java added::Set up for when we get the shooter working
