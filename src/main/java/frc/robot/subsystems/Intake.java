@@ -1,47 +1,36 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.Constants.*;
 
-
-
-public class Intake{
-    TalonFX intakeTalonMotor = null;
-    SparkMax intakeNeoMotor = null; 
-    
+public class Intake extends SubsystemBase {
     // one neo for spin another kraken for up and down
 
+    TalonFX intakeTalonMotor;
+    SparkMax intakeNeoMotor;
 
-    public Intake (int deviceIDTalon, int deviceIDNeo) {
-        intakeTalonMotor = new TalonFX(deviceIDTalon);
-        intakeNeoMotor = new SparkMax(deviceIDNeo, MotorType.kBrushless);
+    private static final Intake m_intake = new Intake();
+    public static Intake getInstance() {return m_intake;}
+
+    public Intake () {
+        intakeTalonMotor = new TalonFX(IntakeConstants.shooterTalonDeviceId);
+        intakeNeoMotor = new SparkMax(IntakeConstants.shooterCanDeviceId, IntakeConstants.shooterCanMotorType);
     }
 
     public void moveIntakeUp() {
         intakeTalonMotor.set(0.5);
-        
         intakeTalonMotor.set(0);
     }
     
     public void moveIntakedown() {
         intakeTalonMotor.set(-0.5);
-        
         intakeTalonMotor.set(0);
     }
 
     public void runIntake(){
         intakeNeoMotor.set(0.5);
-        
         intakeNeoMotor.set(0);
 
     }

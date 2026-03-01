@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.constants.Constants.OIConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.commands.AutoAlign;
 
@@ -79,17 +81,43 @@ public class Controller extends SubsystemBase{
             .toggleOnTrue(
                 new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
 
-        new JoystickButton(m_joystick1, 5)
-            .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        // actual subsystem button bindings
+        new JoystickButton(m_joystick2, 3)
+            .whileTrue(new RunCommand(
+                () -> Intake.getInstance().moveIntakeUp(),
+                Intake.getInstance()));
 
-        new JoystickButton(m_joystick1, 6)
-            .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        new JoystickButton(m_joystick2, 4)
+            .whileTrue(new RunCommand(
+                () -> Intake.getInstance().moveIntakedown(), 
+                Intake.getInstance()));
 
         new JoystickButton(m_joystick2, 5)
-            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+            .whileTrue(new RunCommand(
+                () -> Climber.getInstance().runClimberMotors(0.5),
+                Climber.getInstance()));
 
         new JoystickButton(m_joystick2, 6)
-            .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
+            .whileTrue(new RunCommand(
+                () -> Climber.getInstance().motionMagicClimberUp(),
+                Climber.getInstance()));
+
+        new JoystickButton(m_joystick2, 7)
+            .whileTrue(new RunCommand(
+                () -> Climber.getInstance().motionMagicClimberDown(),
+                Climber.getInstance()));
+
+        // new JoystickButton(m_joystick1, 5)
+        //     .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+
+        // new JoystickButton(m_joystick1, 6)
+        //     .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+        // new JoystickButton(m_joystick2, 5)
+        //     .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+
+        // new JoystickButton(m_joystick2, 6)
+        //     .onTrue(DriveTrain.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     @Override

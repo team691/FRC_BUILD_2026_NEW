@@ -20,8 +20,8 @@ public class AlignToShoot extends Command {
 
     private static final AlignToShoot m_align = new AlignToShoot(DriveTrain.getInstance());
     public static AlignToShoot getInstance() {return m_align;}
+    
     private final Vision m_vision = new Vision();
-
 
     public AlignToShoot(DriveTrain drivebase) {
         this.constraints = new PathConstraints(

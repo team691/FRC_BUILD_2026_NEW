@@ -1,5 +1,6 @@
 package frc.robot.constants;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,20 +16,38 @@ import edu.wpi.first.math.util.Units;
  * 
  */
 public final class Constants {
-    public static final double X_REEF_ALIGNMENT_P = 3.3;
-    public static final double Y_REEF_ALIGNMENT_P = 3.3;
-    public static final double ROT_REEF_ALIGNMENT_P = 0.058;
+  public static final double X_REEF_ALIGNMENT_P = 3.3;
+  public static final double Y_REEF_ALIGNMENT_P = 3.3;
+  public static final double ROT_REEF_ALIGNMENT_P = 0.058;
 
-    public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
-    public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 1;
-    public static final double X_SETPOINT_REEF_ALIGNMENT = -0.34;  // Vertical pose
-    public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.02;
-    public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.16;  // Horizontal pose
-    public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.02;
+  public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
+  public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 1;
+  public static final double X_SETPOINT_REEF_ALIGNMENT = -0.34;  // Vertical pose
+  public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.02;
+  public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.16;  // Horizontal pose
+  public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.02;
 
-    public static final double DONT_SEE_TAG_WAIT_TIME = 1;
-    public static final double POSE_VALIDATION_TIME = 0.3;
+  public static final double DONT_SEE_TAG_WAIT_TIME = 1;
+  public static final double POSE_VALIDATION_TIME = 0.3;
 
+  public static final class ClimberConstants {
+    public static final double talonClimberConfigkS = 0.25;
+    public static final double talonClimberConfigkV = 0.12;
+    public static final double talonClimberConfigkA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    public static final double talonClimberConfigkP = 4.8; // A position error of 2.5 rotations results in 12 V output
+    public static final double talonClimberConfigkI = 0; // no output for integrated error
+    public static final double talonClimberConfigkD = 0.1;
+
+    public static final int climberTalonDeviceIdMotor1 = 11;
+    public static final int climberTalonDeviceIdMotor2 = 12;
+  }
+
+  public static final class IntakeConstants {
+    public static final int shooterTalonDeviceId = 9;
+    public static final int shooterCanDeviceId = 10;
+    public static final MotorType shooterCanMotorType = MotorType.kBrushless;
+  }
+ 
   public static final class TestConstants {
     public static final double X_REEF_ALIGNMENT_P = 1.5; //1
     public static final double Y_REEF_ALIGNMENT_P = 2.1;//1.74
@@ -243,11 +262,14 @@ public final class Constants {
   }
 
   public static final class ShooterConstants{
-    public static final int ShooterID = 9;
-    public static final int PassThroughID = 10;
+    public static final int shooterTalonDeviceId = 3;
 
-    public static final double ShooterPower = -0.6;
-    public static final double PassThroughPower = 0.85;
+
+    // public static final int ShooterID = 9;
+    // public static final int PassThroughID = 10;
+
+    // public static final double ShooterPower = -0.6;
+    // public static final double PassThroughPower = 0.85;
   }
 
   public static final class NeoMotorConstants {

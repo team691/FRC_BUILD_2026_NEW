@@ -11,14 +11,20 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 //import frc.Buttons;
+import frc.robot.constants.Constants.*;
 
-public class Shooter {
-    TalonFX shooterMotor = null;
+public class Shooter extends SubsystemBase {
+    private static final Shooter m_shooter = new Shooter();
+    public static Shooter getInstance() {return m_shooter;}
 
-    public Shooter (int deviceID) {
-        shooterMotor = new TalonFX(deviceID);
+
+    TalonFX shooterMotor;
+
+    public Shooter () {
+        shooterMotor = new TalonFX(ShooterConstants.shooterTalonDeviceId);
     }
 
     public void setShooterSpeed(int speed) {
