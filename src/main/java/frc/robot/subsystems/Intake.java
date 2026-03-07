@@ -12,6 +12,9 @@ import org.littletonrobotics.junction.Logger;
 
 
 import dev.doglog.DogLog;
+import frc.robot.utils.Elastic;
+import frc.robot.utils.Elastic.Notification;
+import frc.robot.utils.Elastic.NotificationLevel;
 
 
 public class Intake extends SubsystemBase {
@@ -24,6 +27,8 @@ public class Intake extends SubsystemBase {
 
     private static final Intake m_intake = new Intake();
     public static Intake getInstance() {return m_intake;}
+
+    public final Notification IntakeChange = new Notification(NotificationLevel.INFO, "Intake Change", "Intake position has been changed.");
 
     MotionMagicVoltage positionRequest = new MotionMagicVoltage(0);
 
@@ -39,9 +44,10 @@ public class Intake extends SubsystemBase {
         intakeTalonMotor.setControl(positionRequest.withPosition(500));
         DogLog.log("Intake", "Intake up");
         DogLog.log("Intake", "talon current " + intakeTalonMotor.getSupplyCurrent());
+        Elastic.sendNotification(IntakeChange);
     }
    
-    public void moveIntakedown() {
+    public void moveIntakeDown() {
         runIntake();
         intakeTalonMotor.setControl(positionRequest.withPosition(0));
         // intakeTalonMotor.set(0);

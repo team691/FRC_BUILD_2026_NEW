@@ -89,7 +89,7 @@ public class Controller extends SubsystemBase{
 
         new JoystickButton(m_joystick2, 4)
             .whileTrue(new RunCommand(
-                () -> Intake.getInstance().moveIntakedown(), 
+                () -> Intake.getInstance().moveIntakeDown(), 
                 Intake.getInstance()));
 
         new JoystickButton(m_joystick2, 5)
