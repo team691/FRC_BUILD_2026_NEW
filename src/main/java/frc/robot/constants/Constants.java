@@ -38,14 +38,16 @@ public final class Constants {
     public static final double talonClimberConfigkI = 0; // no output for integrated error
     public static final double talonClimberConfigkD = 0.1;
 
-    public static final int climberTalonDeviceIdMotor1 = 11;
-    public static final int climberTalonDeviceIdMotor2 = 12;
+    public static final int climberTalonDeviceIdMotor1 = 2;
+    public static final int climberTalonDeviceIdMotor2 = 3;
   }
 
   public static final class IntakeConstants {
-    public static final int shooterTalonDeviceId = 9;
-    public static final int shooterCanDeviceId = 10;
-    public static final MotorType shooterCanMotorType = MotorType.kBrushless;
+    public static final int ballIntakeTalonId = 1;
+    public static final int moveIntakeDownId = 11;
+    // 12 thrutake
+    // public static final int shooterCanDeviceId = 12;
+    public static final MotorType intakeCanMotorType = MotorType.kBrushless;
   }
  
   public static final class TestConstants {
@@ -262,7 +264,7 @@ public final class Constants {
   }
 
   public static final class ShooterConstants{
-    public static final int shooterTalonDeviceId = 3;
+    public static final int shooterTalonDeviceId = 20;
 
 
     // public static final int ShooterID = 9;
