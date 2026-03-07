@@ -43,6 +43,7 @@ public class Shooter extends SubsystemBase {
         AprilTagHashMap.put(4, 53.0f);
     }
 
+    // TODO: when we are not shooting/not our turn, set shooter speed to like 0.75 (constant) for moving balls to other side
     public void setShooterSpeed(double speed) {
         shooterMotor.set(speed);
     }
@@ -52,6 +53,7 @@ public class Shooter extends SubsystemBase {
         double speed = (2.05*distance+0.045*angle_to_hub + constant)/100;
         return speed;
     }
+    
 
     public void teleopPeriodic() {
     // double speed = (2.05*dist+0.045*angle_to_hub + 41)/100;
