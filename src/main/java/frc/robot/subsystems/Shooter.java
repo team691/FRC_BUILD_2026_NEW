@@ -29,11 +29,10 @@ public class Shooter extends SubsystemBase {
     public static final String cam_thing = "HD_USB_Camera";
     private final PhotonCamera camza = new PhotonCamera(cam_thing);
     Transform3d position = new Transform3d();
-     HashMap<Integer, Float> AprilTagHashMap = new HashMap<>(
-    // {11, 50},
-    );
+     HashMap<Integer, Float> AprilTagHashMap = new HashMap<>();
 
     TalonFX shooterMotor;
+    
 
     public Shooter () {
         shooterMotor = new TalonFX(ShooterConstants.shooterTalonDeviceId);
@@ -46,9 +45,11 @@ public class Shooter extends SubsystemBase {
     // TODO: when we are not shooting/not our turn, set shooter speed to like 0.75 (constant) for moving balls to other side
     public void setShooterSpeed(double speed) {
         shooterMotor.set(speed);
+        Timer.delay(1);
+
     }
 
-    public double getShooterSpeed(double distance, double angle_to_hub, Float constant) {
+    public double CreateShooterSpeed(double distance, double angle_to_hub, Float constant) {
         // return shooterMotor.get();
         double speed = (2.05*distance+0.045*angle_to_hub + constant)/100;
         return speed;
@@ -56,6 +57,7 @@ public class Shooter extends SubsystemBase {
     
 
     public void teleopPeriodic() {
+      /* 
     // double speed = (2.05*dist+0.045*angle_to_hub + 41)/100;
     PhotonPipelineResult result = camza.getLatestResult();
     camza.setPipelineIndex(0);
@@ -72,16 +74,51 @@ public class Shooter extends SubsystemBase {
     double distance = (Math.sqrt(Math.pow(bestCam.getX(), 2) + Math.pow(bestCam.getY(), 2))) * (3.28084) + 4.25;
     double angle_to_hub = target.getYaw();
     Float constant = AprilTagHashMap.get(id);
-    double speed = getShooterSpeed(distance, angle_to_hub, constant);
+    double speed = CreateShooterSpeed(distance, angle_to_hub, constant);
     setShooterSpeed(speed);
     
-  }}}
+  }}*/}
+  
+  public double getDistance() {
+    PhotonPipelineResult result = camza.getLatestResult();
+    camza.setPipelineIndex(0);
+    if (result.hasTargets()) {
+      var target = result.getBestTarget();
+      Transform3d bestCam = target.getBestCameraToTarget();
+      double distance = (Math.sqrt(Math.pow(bestCam.getX(), 2) + Math.pow(bestCam.getY(), 2))) * (3.28084) + 4.25;
+      return distance;
+    }
+    return 0;
+   }
+
+   public double getAngleToHub() {
+    PhotonPipelineResult result = camza.getLatestResult();
+    camza.setPipelineIndex(0);
+    if (result.hasTargets()) {
+      var target = result.getBestTarget();
+      double angle_to_hub = target.getYaw();
+      return angle_to_hub;
+    }
+    return 0;
+   }
+
+   public float getConstant() {
+    PhotonPipelineResult result = camza.getLatestResult();
+    camza.setPipelineIndex(0);
+    if (result.hasTargets()) {
+      var target = result.getBestTarget();
+      int id = target.getFiducialId();
+      Float constant = AprilTagHashMap.get(id);
+      return constant;
+    }
+    return 0;
+   }
+
+  public double getSpeed() {
+    double dist = getDistance();
+    double angle_to_hub = getAngleToHub();
+    Float constant = getConstant();
     
-
-    /*Final (Gear ratio = 1):
-%Power = [1 / (200 * π * r)] *sqrt( [g * x^2] /[2 * cos^2(θ) * {x * tan(θ) - y}] )
-
-For non-singular Gear Ratios:
-%Power = [1 / (200 * π * r * G)] * sqrt( [g * x^2] /[2 * cos^2(θ) * {x * tan(θ) - y}] )
- */ 
+    return CreateShooterSpeed(dist, angle_to_hub, constant);
+  }
 }
