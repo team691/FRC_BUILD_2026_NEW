@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.RawDetection;
 
@@ -34,6 +33,9 @@ import frc.robot.constants.Constants.LimelightConstants;
 import org.littletonrobotics.junction.Logger;
 
 import dev.doglog.DogLog;
+
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -70,6 +72,7 @@ public class RobotContainer {
           : stream
       );
       
+
       switch (Robot.CURRENT_ROBOT_MODE) {
             case REAL -> {
                 // Real robot, instantiate hardware IO implementations
@@ -120,6 +123,16 @@ public class RobotContainer {
         m_chooser.addOption("Test PP_LL AutoAlign", DriveTrain.getInstance().ppLLTestAlign());
 
         SmartDashboard.putData("Field", field);
+
+        NamedCommands.registerCommand("IntakeOn", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeDown()));
+        NamedCommands.registerCommand("StopIntake", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeUp()));
+        
+        NamedCommands.registerCommand("Shoot", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0.5)));
+        NamedCommands.registerCommand("StopShooter", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0)));
+
+        NamedCommands.registerCommand("Climb", Climber.getInstance().runOnce(() -> Climber.getInstance().motionMagicClimberUp()));
+        NamedCommands.registerCommand("Lower", Climber.getInstance().runOnce(() -> Climber.getInstance().motionMagicClimberDown()));
+
 
         // Pathplanner Registered Event Markers
         new EventTrigger("test_pose_align_shoot").whileTrue(AlignToShoot.getInstance());

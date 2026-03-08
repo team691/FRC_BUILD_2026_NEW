@@ -1,0 +1,9 @@
+[
+  "IntakeCube",
+  "StopIntake",
+  "Shoot",
+  "StopShooter",
+  "Climb",
+  "Lower",
+  "test_pose_align_shoot"
+]
