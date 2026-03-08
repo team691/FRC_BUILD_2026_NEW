@@ -17,6 +17,8 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,10 +27,13 @@ import dev.doglog.*;
 import frc.robot.constants.Constants.*;
 
 public class ThroughTake extends SubsystemBase {
-  private SparkMax throughTakeMotor = new SparkMax(12, MotorType.kBrushless);
+  private SparkMax throughTakeMotor;
+
+  private static final ThroughTake m_thrutake = new ThroughTake();
+  public static ThroughTake getInstance() {return m_thrutake;}
 
   public ThroughTake() {
-    
+    throughTakeMotor = new SparkMax(ThroughTakeConstants.throughTakeCanId, ThroughTakeConstants.throughTakeMotorType);
   }
 
   public void runThroughTake() {

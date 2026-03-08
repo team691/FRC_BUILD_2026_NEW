@@ -274,6 +274,11 @@ public final class Constants {
     // public static final double PassThroughPower = 0.85;
   }
 
+  public static final class ThroughTakeConstants {
+      public static final int throughTakeCanId = 12;
+      public static final MotorType throughTakeMotorType = MotorType.kBrushless;
+  }
+
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676.0;
   }

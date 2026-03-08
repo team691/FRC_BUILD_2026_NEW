@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -14,11 +15,16 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.commands.AutoAlign;
+import frc.robot.commands.ThruTakeToShooter;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ThroughTake;
 
 public class Controller extends SubsystemBase{
     Joystick m_joystick1 = new Joystick(0);
     Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
     XboxController m_controller = new XboxController(2);
+
+    ThruTakeToShooter m_thruTakeToShooter = new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance());
 
     // values will be between 0 and 1 in this map
     private double[] PowerMap =
@@ -73,13 +79,24 @@ public class Controller extends SubsystemBase{
                 () -> DriveTrain.getInstance().zeroHeading(),
                 DriveTrain.getInstance()));
 
+        new JoystickButton(m_joystick1, 3) 
+            .toggleOnTrue(
+                m_thruTakeToShooter
+            );
+               
+        /* 
         new JoystickButton(m_joystick1, 3)
             .toggleOnTrue(
                 new AutoAlign(DriveTrain.getInstance(), "limelight-two"));
-
+        
         new JoystickButton(m_joystick1, 4)
             .toggleOnTrue(
                 new AutoAlign(DriveTrain.getInstance(), "limelight-three"));
+        */
+        new JoystickButton(m_joystick1, 5)
+            .toggleOnTrue(
+                new InstantCommand(()-> 
+                Shooter.getInstance().setShooterSpeed(0.7)));
 
         // actual subsystem button bindings
         new JoystickButton(m_joystick2, 3)
