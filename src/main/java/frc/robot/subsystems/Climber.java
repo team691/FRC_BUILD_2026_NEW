@@ -19,6 +19,8 @@ public class Climber extends SubsystemBase {
     private static final Climber m_climber = new Climber();
     public static Climber getInstance() {return m_climber;}
 
+    public static int climberRotations = 100;
+
     public Climber () {
         climberMotor1 = new TalonFX(ClimberConstants.climberTalonDeviceIdMotor1);
         climberMotor2 = new TalonFX(ClimberConstants.climberTalonDeviceIdMotor2);
@@ -50,12 +52,12 @@ public class Climber extends SubsystemBase {
     public void motionMagicClimberUp() {
         //ClimberTalonMotor
         //ClimberTalonMotor2
-        climberMotor1.setControl(positionRequest.withPosition(500));
-        climberMotor2.setControl(positionRequest.withPosition(500));
+        climberMotor1.setControl(positionRequest.withPosition(climberRotations));
+        climberMotor2.setControl(positionRequest.withPosition(climberRotations));
     }
 
     public void motionMagicClimberDown() {
-        climberMotor1.setControl(positionRequest.withPosition(0));
-        climberMotor2.setControl(positionRequest.withPosition(0));
+        climberMotor1.setControl(positionRequest.withPosition(-climberRotations));
+        climberMotor2.setControl(positionRequest.withPosition(-climberRotations));
     }
 }

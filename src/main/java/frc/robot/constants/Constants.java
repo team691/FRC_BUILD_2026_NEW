@@ -264,7 +264,7 @@ public final class Constants {
   }
 
   public static final class ShooterConstants{
-    public static final int shooterTalonDeviceId = 20;
+    public static final int shooterTalonDeviceId = 4;
 
 
     // public static final int ShooterID = 9;
