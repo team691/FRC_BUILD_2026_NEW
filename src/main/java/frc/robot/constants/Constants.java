@@ -34,7 +34,7 @@ public final class Constants {
     public static final double talonClimberConfigkS = 0.25;
     public static final double talonClimberConfigkV = 0.12;
     public static final double talonClimberConfigkA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    public static final double talonClimberConfigkP = 4.8; // A position error of 2.5 rotations results in 12 V output
+    public static final double talonClimberConfigkP = 1.0; // A position error of 2.5 rotations results in 12 V output
     public static final double talonClimberConfigkI = 0; // no output for integrated error
     public static final double talonClimberConfigkD = 0.1;
 

@@ -79,10 +79,10 @@ public class Controller extends SubsystemBase{
         //         () -> DriveTrain.getInstance().zeroHeading(),
         //         DriveTrain.getInstance()));
 
-        new JoystickButton(m_joystick1, 3) 
-            .toggleOnTrue(
-                new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance())
-            );
+        // new JoystickButton(m_joystick1, 3) 
+        //     .toggleOnTrue(
+        //         new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance())
+        //     );
             
                
         /* 
@@ -106,10 +106,10 @@ public class Controller extends SubsystemBase{
         // new JoystickButton(m_joystick2, 3)
         //     .toggleOnTrue(
         //         new RunCommand(()-> 
-        //         Intake.getInstance().moveIntakeDown()))
-        //     .toggleOnFalse(
-        //         new RunCommand(() ->
-        //         Intake.getInstance().moveIntakeUp()));
+        //         Intake.getInstance().moveIntakeDown()));
+            // .toggleOnFalse(
+            //     new RunCommand(() ->
+            //     Intake.getInstance().moveIntakeUp()));
 
         // new JoystickButton(m_joystick2, 5)
         //     .whileTrue(new RunCommand(
@@ -125,6 +125,12 @@ public class Controller extends SubsystemBase{
         //     .whileTrue(new RunCommand(
         //         () -> Climber.getInstance().motionMagicClimberDown(),
         //         Climber.getInstance()));
+
+        new JoystickButton(m_joystick2, 5)
+            .whileTrue(new RunCommand(
+                () -> ThroughTake.getInstance().runThroughTake()));
+            // .toggleOnFalse(new RunCommand(
+            //     () -> ThroughTake.getInstance().stopThroughTake()));
 
         // new JoystickButton(m_joystick1, 5)
         //     .onTrue(DriveTrain.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));

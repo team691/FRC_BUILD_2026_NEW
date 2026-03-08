@@ -19,7 +19,7 @@ public class Climber extends SubsystemBase {
     private static final Climber m_climber = new Climber();
     public static Climber getInstance() {return m_climber;}
 
-    public static int climberRotations = 100;
+    public static double climberRotations = 10.62;
 
     public Climber () {
         climberMotor1 = new TalonFX(ClimberConstants.climberTalonDeviceIdMotor1);
@@ -36,8 +36,8 @@ public class Climber extends SubsystemBase {
 
         var motionMagiConfiguration = climberMotionConfigs.MotionMagic;
         motionMagiConfiguration.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
-        motionMagiConfiguration.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
-        motionMagiConfiguration.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
+        motionMagiConfiguration.MotionMagicAcceleration = 160/5; // Target acceleration of 160 rps/s (0.5 seconds)
+        motionMagiConfiguration.MotionMagicJerk = 1600/50; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
         // config sets
         climberMotor1.getConfigurator().apply(climberMotionConfigs);
