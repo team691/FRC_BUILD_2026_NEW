@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 
 import dev.doglog.DogLog;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants.IntakeConstants;
 import frc.robot.utils.Elastic;
@@ -44,7 +45,7 @@ public class Intake extends SubsystemBase {
         slot0Configs.kS = 0.25; // Add 0.25 V output to overcome static friction
         slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
         slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-        slot0Configs.kP = 1.3; // 4.8 A position error of 2.5 rotations results in 12 V output
+        slot0Configs.kP = 1.0; // 4.8 A position error of 2.5 rotations results in 12 V output
         slot0Configs.kI = 0; // no output for integrated error
         slot0Configs.kD = 0.1; // 0.1 A velocity error of 1 rps results in 0.1 V output
 
@@ -70,41 +71,50 @@ public class Intake extends SubsystemBase {
         Elastic.sendNotification(IntakeChange);
     }
    
-    // public void moveIntakeDown() {
-    //     runIntake();
-    //     intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
-    //     intakeTalonMotor.set(-0.1);
-    //     DogLog.log("Intake", "Intake down");
-    // }
-
-    // ...existing code...
     public void moveIntakeDown() {
         runIntake();
-        // Request motion magic to move down
+        Timer time = new Timer();
+        time.start();
         intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
-        DogLog.log("Intake", "Intake down (motion request sent)");
-
-        // Apply a small opposite-direction output for configurable time to slow descent (anti-gravity)
-        if (antiGravityActive.compareAndSet(false, true)) {
-            new Thread(() -> {
-                try {
-                    DogLog.log("Intake", "Anti-gravity hold start: power=" + antiGravityPower + " dur=" + antiGravityDurationSec);
-                    // Apply small opposite-direction percent output
-                    intakeTalonMotor.set(antiGravityPower);
-                    Thread.sleep((long)(antiGravityDurationSec * 1000.0));
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } finally {
-                    // Re-apply the position control so closed-loop resumes holding the target
-                    intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
-                    DogLog.log("Intake", "Anti-gravity hold end, resumed position control");
-                    antiGravityActive.set(false);
-                }
-            }, "IntakeAntiGravity").start();
-        } else {
-            DogLog.log("Intake", "Anti-gravity already active, not starting another");
+        System.out.println("reached apex");
+        intakeTalonMotor.set(-1);
+        System.out.println("antigravity on");
+        if (time.hasElapsed(2)) {
+            System.out.println("time stopped, antigravity of");
+            time.stop();
+            stopIntake();
         }
+        DogLog.log("Intake", "Intake down");
     }
+
+    // ...existing code...
+    // public void moveIntakeDown() {
+    //     runIntake();
+    //     // Request motion magic to move down
+    //     intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
+    //     DogLog.log("Intake", "Intake down (motion request sent)");
+
+    //     // Apply a small opposite-direction output for configurable time to slow descent (anti-gravity)
+    //     if (antiGravityActive.compareAndSet(false, true)) {
+    //         new Thread(() -> {
+    //             try {
+    //                 DogLog.log("Intake", "Anti-gravity hold start: power=" + antiGravityPower + " dur=" + antiGravityDurationSec);
+    //                 // Apply small opposite-direction percent output
+    //                 intakeTalonMotor.set(antiGravityPower);
+    //                 Thread.sleep((long)(antiGravityDurationSec * 1000.0));
+    //             } catch (InterruptedException e) {
+    //                 Thread.currentThread().interrupt();
+    //             } finally {
+    //                 // Re-apply the position control so closed-loop resumes holding the target
+    //                 intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
+    //                 DogLog.log("Intake", "Anti-gravity hold end, resumed position control");
+    //                 antiGravityActive.set(false);
+    //             }
+    //         }, "IntakeAntiGravity").start();
+    //     } else {
+    //         DogLog.log("Intake", "Anti-gravity already active, not starting another");
+    //     }
+    // }
 // ...existing code...
 
     public void runIntake(){
