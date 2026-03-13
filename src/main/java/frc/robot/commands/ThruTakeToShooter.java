@@ -21,7 +21,7 @@ public void execute() {
     double m_speed = 0.8;
     shooter.setShooterSpeed(m_speed);
     Timer.delay(0.5);
-    m_thrutake.runThroughTake(); 
+    m_thrutake.runThroughTake(1.0); 
   }
 
   public void end(boolean interrupted) {
