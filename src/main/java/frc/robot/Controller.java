@@ -53,26 +53,62 @@ public class Controller extends SubsystemBase{
     }
     
     public Controller (){
-        // DriveTrain.getInstance().setDefaultCommand(new RunCommand(
-        //       () -> DriveTrain.getInstance().drive(
+        DriveTrain.getInstance().setDefaultCommand(new RunCommand(
+              () -> DriveTrain.getInstance().drive(
                   
-        //           ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
-        //           ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
-        //         //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
-        //           (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
-        //           true, true),
-        //       DriveTrain.getInstance()));
-        //buttonBoard.SetupButtons();
+                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
+                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
+                //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
+                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
+                  true, true),
+              DriveTrain.getInstance()));
+        // buttonBoard.SetupButtons();
         configureButtonBindings();
     }
 
     //configures all buttons
     private void configureButtonBindings(){
+        new JoystickButton(m_joystick2, 12)
+            .whileTrue(new RunCommand(
+                () -> DriveTrain.getInstance().setX(),
+                DriveTrain.getInstance()));
+
+        // This button for the DRIVER will zero the gyro's angle
+        new JoystickButton(m_joystick1, 12)
+            .whileTrue(new RunCommand(
+                () -> DriveTrain.getInstance().zeroHeading(),
+                DriveTrain.getInstance()));
+        // new JoystickButton(m_joystick1, 3)
+        //     .whileTrue(new InstantCommand(()-> 
+        //              Shooter.getInstance().setShooterSpeed(0.2)))
+        //     .whileFalse(new InstantCommand(()-> 
+        //              Shooter.getInstance().setShooterSpeed(0)));
         new JoystickButton(m_joystick1, 3)
-            .whileTrue(new InstantCommand(()-> 
-                     Shooter.getInstance().setShooterSpeed(0.2)))
-            .whileFalse(new InstantCommand(()-> 
-                     Shooter.getInstance().setShooterSpeed(0)));
+            .onTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
+
+        new JoystickButton(m_joystick2, 5)
+            .whileTrue(new RunCommand(
+                () -> ThroughTake.getInstance().runThroughTake()));
+            // .toggleOnFalse(new RunCommand(
+            //     () -> ThroughTake.getInstance().stopThroughTake()));
+
+        new JoystickButton(m_joystick1, 5)
+            .whileTrue(
+                new RunCommand(()-> 
+                Intake.getInstance().runIntake()))
+            .whileFalse(
+                new RunCommand(() ->
+                Intake.getInstance().stopIntake()));
+
+        new JoystickButton(m_joystick2, 6)
+            .whileTrue(new RunCommand(
+                () -> Climber.getInstance().motionMagicClimberUp(),
+                Climber.getInstance()));
+
+        new JoystickButton(m_joystick2, 7)
+            .whileTrue(new RunCommand(
+                () -> Climber.getInstance().motionMagicClimberDown(),
+                Climber.getInstance()));
     }
 
     @Override

@@ -118,7 +118,9 @@ public class Shooter extends SubsystemBase {
     double dist = getDistance();
     double angle_to_hub = getAngleToHub();
     Float constant = getConstant();
-    
+    System.out.println("Distance: " + dist);
+    System.out.println("Angle: " + angle_to_hub);
+    System.out.println("Speed: " + CreateShooterSpeed(dist, angle_to_hub, constant));
     return CreateShooterSpeed(dist, angle_to_hub, constant);
   }
 }

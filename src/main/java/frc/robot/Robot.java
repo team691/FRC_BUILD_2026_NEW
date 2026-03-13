@@ -38,7 +38,7 @@ public class Robot extends LoggedRobot {
   // private boolean SetToCorrectPosition = false;
   private RobotContainer m_robotContainer;
   private final AHRS m_navx = new AHRS(NavXComType.kMXP_SPI);
-  private final Vision m_vision = new Vision();
+  // private final Vision m_vision = new Vision();
   private static final Notification teleop = new Notification(NotificationLevel.INFO, "Teleop Mode", "Teleoperated mode activated");
   public Notification auto = new Notification(NotificationLevel.INFO, "Auto Mode", "Autonomous mode activated");
   /**
@@ -106,7 +106,7 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput("RobotPose", new Pose2d());
     
     // LimelightHelpers.SetRobotOrientation("limelight", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
-    m_vision.setRobotOrientation(m_navx.getYaw(), 0.0, 0.0, 0.0, 0.0, 0.0);
+    // m_vision.setRobotOrientation(m_navx.getYaw(), 0.0, 0.0, 0.0, 0.0, 0.0);
     // m_vision.setRobotOrientation(m_navx.getYaw(), m_navx.getRate(), m_navx.getPitch(), m_navx.getRawGyroX(), m_navx.getRate(), m_navx.getRawGyroY());
     
     CommandScheduler.getInstance().run();
@@ -169,9 +169,9 @@ public class Robot extends LoggedRobot {
   @Override
   
   public void teleopPeriodic() {
-    m_vision.runPosePeriodic();
-    m_vision.globalPoseEstimator();
-    System.out.println("limelight pose estimator thing: " + m_vision.globalPoseEstimator());
+    // m_vision.runPosePeriodic();
+    // m_vision.globalPoseEstimator();
+    // System.out.println("limelight pose estimator thing: " + m_vision.globalPoseEstimator());
   }
 
   @Override

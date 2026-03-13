@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
 
     final MotionMagicVoltage positionRequest = new MotionMagicVoltage(0);
 
-    public static double rotationAmount = 0.1;
+    public static double rotationAmount = 0.01;
 
     // anti-gravity (small opposite-direction output) defaults
     private volatile double antiGravityPower = -0.1;             // small opposite-direction percent output
@@ -77,7 +77,7 @@ public class Intake extends SubsystemBase {
         time.start();
         intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
         System.out.println("reached apex");
-        intakeTalonMotor.set(-1);
+        // intakeTalonMotor.set(-1);
         System.out.println("antigravity on");
         if (time.hasElapsed(2)) {
             System.out.println("time stopped, antigravity of");
@@ -118,7 +118,8 @@ public class Intake extends SubsystemBase {
 // ...existing code...
 
     public void runIntake(){
-        intakeNeoMotor.set(0.6);
+        intakeTalonMotor.set(-0.1);
+        intakeNeoMotor.set(1.0);
         // intakeNeoMotor.set(0);
         DogLog.log("Intake", "Intake running");
     }

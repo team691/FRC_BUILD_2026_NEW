@@ -4,7 +4,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.AlignToShoot;
+// import frc.robot.commands.AlignToShoot;
 import frc.robot.constants.Constants.*;
 
 public class Climber extends SubsystemBase {

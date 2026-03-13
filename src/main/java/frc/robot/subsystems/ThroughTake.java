@@ -37,7 +37,7 @@ public class ThroughTake extends SubsystemBase {
   }
 
   public void runThroughTake() {
-    throughTakeMotor.set(0.5);
+    throughTakeMotor.set(1.0);
     DogLog.log("ThroughTake", "ThroughTake running");
   }
 

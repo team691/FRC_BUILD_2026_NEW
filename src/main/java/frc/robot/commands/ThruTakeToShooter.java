@@ -15,8 +15,10 @@ public class ThruTakeToShooter extends Command {
   }
 
 public void execute() {
+    shooter.getSpeed();
     // double m_speed = shooter.getSpeed();
-    double m_speed = 0.5;
+    // System.out.println("speed "+m_speed);
+    double m_speed = 0.8;
     shooter.setShooterSpeed(m_speed);
     Timer.delay(0.5);
     m_thrutake.runThroughTake(); 

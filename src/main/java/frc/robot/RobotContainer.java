@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 // import frc.robot.enums.RobotMode;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
-import frc.robot.commands.AlignToShoot;
+// import frc.robot.commands.AlignToShoot;
 import frc.robot.constants.Configs;
 import frc.robot.constants.Constants.LimelightConstants;
 
@@ -135,12 +135,12 @@ public class RobotContainer {
 
 
         // Pathplanner Registered Event Markers
-        new EventTrigger("test_pose_align_shoot").whileTrue(AlignToShoot.getInstance());
-        NamedCommands.registerCommand("test_pose_align_shoot", AlignToShoot.getInstance());
+        // new EventTrigger("test_pose_align_shoot").whileTrue(AlignToShoot.getInstance());
+        // NamedCommands.registerCommand("test_pose_align_shoot", AlignToShoot.getInstance());
 
         // m_chooser.addOption("Fuel Object Detection Align", DriveTrain.getInstance().pathplannerObjAlign());
 
-        m_chooser.addOption("Testing shooter align", new AlignToShoot(DriveTrain.getInstance()));
+        // m_chooser.addOption("Testing shooter align", new AlignToShoot(DriveTrain.getInstance()));
 
       // Ignore controller warnings
       DriverStation.silenceJoystickConnectionWarning(true);
