@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkMax;
 
 import dev.doglog.DogLog;
@@ -65,25 +66,36 @@ public class Intake extends SubsystemBase {
         // intakeTalonMotor.set(0.3);
         // stopIntake();
         stopIntake();
-        intakeTalonMotor.setControl(positionRequest.withPosition(-rotationAmount));
+        Timer time = new Timer();
+        time.start();
+        intakeTalonMotor.set(1);
+        if (time.hasElapsed(0.5)) {
+            intakeTalonMotor.set(0);
+        }
+        // intakeTalonMotor.setControl(positionRequest.withPosition(-rotationAmount));
         DogLog.log("Intake", "Intake up");
         DogLog.log("Intake", "talon current " + intakeTalonMotor.getSupplyCurrent());
         Elastic.sendNotification(IntakeChange);
     }
    
     public void moveIntakeDown() {
-        runIntake();
+        //runIntake();
         Timer time = new Timer();
         time.start();
-        intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
-        System.out.println("reached apex");
-        // intakeTalonMotor.set(-1);
-        System.out.println("antigravity on");
-        if (time.hasElapsed(2)) {
-            System.out.println("time stopped, antigravity of");
-            time.stop();
-            stopIntake();
+        intakeTalonMotor.set(-0.6);
+        if (time.hasElapsed(0.1)) {
+            intakeTalonMotor.set(0);
+            System.out.println("reached apex");
         }
+        //intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
+        // intakeTalonMotor.set(-1);
+        // System.out.println("antigravity on");
+        // intakeTalonMotor.set(-0.1);
+        // if (time.hasElapsed(2)) {
+        //     System.out.println("time stopped, antigravity of");
+        //     time.stop();
+        //     intakeTalonMotor.set(0);
+        // }
         DogLog.log("Intake", "Intake down");
     }
 
@@ -118,7 +130,8 @@ public class Intake extends SubsystemBase {
 // ...existing code...
 
     public void runIntake(){
-        intakeTalonMotor.set(-0.1);
+        // intakeTalonMotor.set(-0.1);
+        intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
         intakeNeoMotor.set(1.0);
         // intakeNeoMotor.set(0);
         DogLog.log("Intake", "Intake running");

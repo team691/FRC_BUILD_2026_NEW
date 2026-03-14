@@ -53,15 +53,15 @@ public class Controller extends SubsystemBase{
     }
     
     public Controller (){
-        DriveTrain.getInstance().setDefaultCommand(new RunCommand(
-              () -> DriveTrain.getInstance().drive(
+        // DriveTrain.getInstance().setDefaultCommand(new RunCommand(
+        //       () -> DriveTrain.getInstance().drive(
                   
-                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
-                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
-                //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
-                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
-                  true, true),
-              DriveTrain.getInstance()));
+        //           ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
+        //           ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
+        //         //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
+        //           (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
+        //           true, true),
+        //       DriveTrain.getInstance()));
         configureButtonBindings();
     }
 
@@ -98,10 +98,10 @@ public class Controller extends SubsystemBase{
             );
 
         // shooter (regular speed)
-        new JoystickButton(m_joystick2, 6)
+        new JoystickButton(m_joystick2, 2)
             .toggleOnTrue(
                 new RunCommand(
-                    () -> Shooter.getInstance().setShooterSpeed(0.5),
+                    () -> Shooter.getInstance().setShooterSpeed(0.8),
                     Shooter.getInstance()
                 )
             )
@@ -129,29 +129,30 @@ public class Controller extends SubsystemBase{
 
         // throughtake to shooter cmd
         new JoystickButton(m_joystick2, 5)
-            .onTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
+            .whileTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()))
+            .whileFalse(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
                // .toggleOnFalse(new RunCommand(
             //     () -> ThroughTake.getInstance().stopThroughTake()));
 
        /* INTAKE */
        
        // lower intake + start flywheels
-        new JoystickButton(m_joystick1, 3)
-            .onTrue(
-                new RunCommand(
-                    () -> Intake.getInstance().moveIntakeDown(),
-                    Intake.getInstance()
-                )
-            );
+        // new JoystickButton(m_joystick1, 3)
+        //     .onTrue(
+        //         new RunCommand(
+        //             () -> Intake.getInstance().moveIntakeDown(),
+        //             Intake.getInstance()
+        //         )
+        //     );
 
-        // raise intake
-        new JoystickButton(m_joystick1, 4)
-            .onTrue(
-                new RunCommand(
-                    () -> Intake.getInstance().moveIntakeUp(),
-                    Intake.getInstance()
-                )
-            );
+        // // raise intake
+        // new JoystickButton(m_joystick1, 4)
+        //     .onTrue(
+        //         new RunCommand(
+        //             () -> Intake.getInstance().moveIntakeUp(),
+        //             Intake.getInstance()
+        //         )
+        //     );
 
         new JoystickButton(m_joystick1, 5)
             .whileTrue(
@@ -161,15 +162,23 @@ public class Controller extends SubsystemBase{
                 new RunCommand(() ->
                 Intake.getInstance().stopIntake()));
 
-        // new JoystickButton(m_joystick2, 6)
-        //     .whileTrue(new RunCommand(
-        //         () -> Climber.getInstance().motionMagicClimberUp(),
-        //         Climber.getInstance()));
+        new JoystickButton(m_joystick2, 7)
+            .toggleOnTrue(new InstantCommand(
+                () -> Climber.getInstance().motionMagicClimberUp(),
+                Climber.getInstance()))
+            .toggleOnFalse(new InstantCommand(
+                () -> Climber.getInstance().stopClimber(),
+                Climber.getInstance()
+            ));
 
-        // new JoystickButton(m_joystick2, 7)
-        //     .whileTrue(new RunCommand(
-        //         () -> Climber.getInstance().motionMagicClimberDown(),
-        //         Climber.getInstance()));
+        new JoystickButton(m_joystick2, 8)
+            .toggleOnTrue(new RunCommand(
+                () -> Climber.getInstance().motionMagicClimberDown(),
+                Climber.getInstance()))
+            .toggleOnFalse(new RunCommand(
+                () -> Climber.getInstance().stopClimber(),
+                Climber.getInstance()
+            ));
     }
 
     @Override

@@ -120,7 +120,7 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Chooser", m_chooser);
 
-        m_chooser.addOption("Test PP_LL AutoAlign", DriveTrain.getInstance().ppLLTestAlign());
+        // m_chooser.addOption("Test PP_LL AutoAlign", DriveTrain.getInstance().ppLLTestAlign());
 
         SmartDashboard.putData("Field", field);
 

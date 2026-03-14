@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.commands.AlignToShoot;
 import frc.robot.constants.Constants.*;
@@ -19,7 +21,7 @@ public class Climber extends SubsystemBase {
     private static final Climber m_climber = new Climber();
     public static Climber getInstance() {return m_climber;}
 
-    public static double climberRotations = 10.62;
+    public static double climberRotations = 10.63;
 
     public Climber () {
         climberMotor1 = new TalonFX(ClimberConstants.climberTalonDeviceIdMotor1);
@@ -59,5 +61,15 @@ public class Climber extends SubsystemBase {
     public void motionMagicClimberDown() {
         climberMotor1.setControl(positionRequest.withPosition(-climberRotations));
         climberMotor2.setControl(positionRequest.withPosition(-climberRotations));
+
+        climberMotor1.setNeutralMode(NeutralModeValue.Brake);
+        climberMotor2.setNeutralMode(NeutralModeValue.Brake);
+    }
+
+    public void stopClimber() {
+        climberMotor1.set(0);
+        climberMotor2.set(0);
+        // climberMotor1.setControl(positionRequest.withPosition(0));
+        // climberMotor2.setControl(positionRequest.withPosition(0));
     }
 }

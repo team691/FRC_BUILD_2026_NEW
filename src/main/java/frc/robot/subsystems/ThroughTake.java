@@ -18,6 +18,7 @@ public class ThroughTake extends SubsystemBase {
 
   public void runThroughTake(double speed) {
     throughTakeMotor.set(speed);
+    // throughTakeMotor.setBra\
     DogLog.log("ThroughTake", "ThroughTake running");
   }
 
