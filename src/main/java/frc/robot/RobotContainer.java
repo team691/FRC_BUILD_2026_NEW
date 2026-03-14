@@ -54,7 +54,7 @@ public class RobotContainer {
     public final Controller controller = new Controller();
     
     // Initialize Sendable Chooser
-    private final SendableChooser<Command> m_chooser;
+    // private final SendableChooser<Command> m_chooser;
     private final SwerveDriveSimulation driveSimulation;
 
     private final Field2d field = new Field2d();
@@ -66,11 +66,11 @@ public class RobotContainer {
       DogLog.forceNt.log("ExampleLog/TuMadre", 0.676767);
       DogLog.log("ExampleLog/testnoforceNt", 6.7);
       DogLog.forceNt.log("ExampleLog/StringTest", "hello world");
-      m_chooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
-        (stream) -> isCompetition
-          ? stream.filter(auto -> auto.getName().startsWith("comp"))
-          : stream
-      );
+      // m_chooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+      //   (stream) -> isCompetition
+      //     ? stream.filter(auto -> auto.getName().startsWith("comp"))
+      //     : stream
+      // );
       
 
       switch (Robot.CURRENT_ROBOT_MODE) {
@@ -118,7 +118,7 @@ public class RobotContainer {
             }
         }
 
-        SmartDashboard.putData("Auto Chooser", m_chooser);
+        // SmartDashboard.putData("Auto Chooser", m_chooser);
 
         // m_chooser.addOption("Test PP_LL AutoAlign", DriveTrain.getInstance().ppLLTestAlign());
 
@@ -185,7 +185,7 @@ public class RobotContainer {
    * Use this to pass the autonomous command to the main {@link Robot} class.
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
-  }
+  // public Command getAutonomousCommand() {
+  //   return m_chooser.getSelected();
+  // }
 }
