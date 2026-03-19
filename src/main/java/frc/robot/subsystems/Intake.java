@@ -30,11 +30,16 @@ public class Intake extends SubsystemBase {
 
     public static double rotationAmount = 0.01;
 
-    // anti-gravity (small opposite-direction output) defaults
-    private volatile double antiGravityPower = -0.1;             // small opposite-direction percent output
-    private volatile double antiGravityDurationSec = 0.2;        // seconds to run anti-gravity output
-    private final java.util.concurrent.atomic.AtomicBoolean antiGravityActive =
-            new java.util.concurrent.atomic.AtomicBoolean(false);
+    // Timed move settings (configurable)
+    private double moveUpSpeed = 1.0;
+    private double moveDownSpeed = -0.6;
+    private double moveUpDurationSec = 0.75;
+    private double moveDownDurationSec = 0.75;
+
+    private enum TimedMoveState { IDLE, MOVING_UP, MOVING_DOWN }
+    private TimedMoveState timedMoveState = TimedMoveState.IDLE;
+    private final Timer moveTimer = new Timer();
+
 
     public Intake () {
         intakeTalonMotor = new TalonFX(IntakeConstants.ballIntakeTalonId);
@@ -61,82 +66,29 @@ public class Intake extends SubsystemBase {
         intakeTalonMotor.getConfigurator().apply(talonFXConfigs);
     }
 
+    // Optional runtime config
+    public void setMoveDurations(double upSec, double downSec) {
+        moveUpDurationSec = upSec;
+        moveDownDurationSec = downSec;
+    }
 
     public void moveIntakeUp() {
-        // intakeTalonMotor.set(0.3);
-        // stopIntake();
-        // stopIntake();
-        // Timer time = new Timer();
-        // time.start();
-        // intakeTalonMotor.set(1);
-        // if (time.hasElapsed(0.5)) {
-        //     intakeTalonMotor.set(0);
-        //     time.stop();
-        // }
-        // // intakeTalonMotor.setControl(positionRequest.withPosition(-rotationAmount));
-        // DogLog.log("Intake", "Intake up");
-        // DogLog.log("Intake", "talon current " + intakeTalonMotor.getSupplyCurrent());
-        // Elastic.sendNotification(IntakeChange);
-        intakeTalonMotor.set(1);
+        stopIntake();
+        timedMoveState = TimedMoveState.MOVING_UP;
+        moveTimer.restart();
+        intakeTalonMotor.set(moveUpSpeed);
     }
    
     public void moveIntakeDown() {
-        //runIntake();
-        // Timer time = new Timer();
-        // time.start();
-        // intakeTalonMotor.set(-0.6);
-        // if (time.hasElapsed(0.1)) {
-        //     intakeTalonMotor.set(0);
-        //     System.out.println("reached apex");
-        // }
-        intakeTalonMotor.set(-0.6);
-        //intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
-        // intakeTalonMotor.set(-1);
-        // System.out.println("antigravity on");
-        // intakeTalonMotor.set(-0.1);
-        // if (time.hasElapsed(2)) {
-        //     System.out.println("time stopped, antigravity of");
-        //     time.stop();
-        //     intakeTalonMotor.set(0);
-        // }
+        runIntake();
+        timedMoveState = TimedMoveState.MOVING_DOWN;
+        moveTimer.restart();
+        intakeTalonMotor.set(moveDownSpeed);
         DogLog.log("Intake", "Intake down");
     }
 
-    // ...existing code...
-    // public void moveIntakeDown() {
-    //     runIntake();
-    //     // Request motion magic to move down
-    //     intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
-    //     DogLog.log("Intake", "Intake down (motion request sent)");
-
-    //     // Apply a small opposite-direction output for configurable time to slow descent (anti-gravity)
-    //     if (antiGravityActive.compareAndSet(false, true)) {
-    //         new Thread(() -> {
-    //             try {
-    //                 DogLog.log("Intake", "Anti-gravity hold start: power=" + antiGravityPower + " dur=" + antiGravityDurationSec);
-    //                 // Apply small opposite-direction percent output
-    //                 intakeTalonMotor.set(antiGravityPower);
-    //                 Thread.sleep((long)(antiGravityDurationSec * 1000.0));
-    //             } catch (InterruptedException e) {
-    //                 Thread.currentThread().interrupt();
-    //             } finally {
-    //                 // Re-apply the position control so closed-loop resumes holding the target
-    //                 intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
-    //                 DogLog.log("Intake", "Anti-gravity hold end, resumed position control");
-    //                 antiGravityActive.set(false);
-    //             }
-    //         }, "IntakeAntiGravity").start();
-    //     } else {
-    //         DogLog.log("Intake", "Anti-gravity already active, not starting another");
-    //     }
-    // }
-// ...existing code...
-
     public void runIntake(){
-        // intakeTalonMotor.set(-0.1);
-        intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
         intakeNeoMotor.set(0.8);
-        // intakeNeoMotor.set(0);
         DogLog.log("Intake", "Intake running");
     }
 
@@ -148,23 +100,27 @@ public class Intake extends SubsystemBase {
     public void stopElevatorIntake() {
         intakeTalonMotor.set(0);
         intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
-
-    }
-   
-    // Adjustable anti-gravity parameters
-    public void setAntiGravityPower(double power) {
-        this.antiGravityPower = power;
+        timedMoveState = TimedMoveState.IDLE;
+        moveTimer.stop();
+        moveTimer.reset();
     }
 
-    public double getAntiGravityPower() {
-        return this.antiGravityPower;
-    }
-
-    public void setAntiGravityDurationSec(double durationSec) {
-        this.antiGravityDurationSec = durationSec;
-    }
-
-    public double getAntiGravityDurationSec() {
-        return this.antiGravityDurationSec;
+    @Override
+    public void periodic() {
+        switch (timedMoveState) {
+            case MOVING_UP:
+                if (moveTimer.hasElapsed(moveUpDurationSec)) {
+                    stopElevatorIntake();
+                }
+                break;
+            case MOVING_DOWN:
+                if (moveTimer.hasElapsed(moveDownDurationSec)) {
+                    stopElevatorIntake();
+                }
+                break;
+            case IDLE:
+            default:
+                break;
+        }
     }
 }
