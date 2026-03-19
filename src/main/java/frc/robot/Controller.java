@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,7 +13,7 @@ import frc.robot.constants.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.LimelightHelpers;
-//import frc.robot.commands.AutoAlign;
+// import frc.robot.commands.AutoAlign;
 import frc.robot.commands.ThruTakeToShooter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ThroughTake;
@@ -48,41 +47,136 @@ public class Controller extends SubsystemBase{
             return 2.0; // 9.0
         }
         else {
-            return 15.0; // 2.0
+            return 20.0; // 2.0
         }
     }
     
     public Controller (){
-        // DriveTrain.getInstance().setDefaultCommand(new RunCommand(
-        //       () -> DriveTrain.getInstance().drive(
+        DriveTrain.getInstance().setDefaultCommand(new RunCommand(
+              () -> DriveTrain.getInstance().drive(
                   
-        //           ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
-        //           ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
-        //         //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
-        //           (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
-        //           true, true),
-        //       DriveTrain.getInstance()));
-        //buttonBoard.SetupButtons();
+                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
+                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
+                //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
+                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
+                  true, true),
+              DriveTrain.getInstance()));
         configureButtonBindings();
     }
 
-    
-    //configures all buttons
-    private void configureButtonBindings(){
-        
-        new JoystickButton(m_joystick1, 3)
-           .toggleOnTrue(new InstantCommand(()-> 
-                    ThruTakeToShooter.ToggleShooterOn()))
-            .toggleOnFalse(new InstantCommand(()-> 
-                    ThruTakeToShooter.ToggleShooterOff()));
-                     
-            //Currently using toggle ^^^. Below is the code for hold to shoot
-            
-                     /* .whileTrue(new InstantCommand(()-> 
-                     Shooter.getInstance().setShooterSpeed(0.2)))
-            .whileFalse(new InstantCommand(()-> 
-                     Shooter.getInstance().setShooterSpeed(0)));*/
-    
+    private void configureButtonBindings() {
+        // thrutake to shooter (pv default), normal thrutake, normal shooter toggle w/ photon vision shooter
+        // lower intake with flywheel running, raise intake
+        // when normal flywheel intake runs, set raise/lower intake to -0.1 speed to ensure it stays there
+        // climber
+
+        new JoystickButton(m_joystick2, 12)
+            .whileTrue(new RunCommand(
+                () -> DriveTrain.getInstance().setX(),
+                DriveTrain.getInstance()));
+
+        // This button for the DRIVER will zero the gyro's angle
+        new JoystickButton(m_joystick1, 12)
+            .whileTrue(new RunCommand( // test with InstantCommand
+                () -> DriveTrain.getInstance().zeroHeading(),
+                DriveTrain.getInstance()));
+
+        // shooter (pv speed)
+        new JoystickButton(m_joystick2, 4)
+            .toggleOnTrue(
+                new RunCommand(
+                    () -> Shooter.getInstance().setShooterSpeed(Shooter.getInstance().getSpeed()),
+                    Shooter.getInstance()
+                )
+            )
+            .toggleOnFalse(
+                new RunCommand(
+                    () -> Shooter.getInstance().setShooterSpeed(0.0),
+                    Shooter.getInstance()
+                )
+            );
+
+        // shooter (regular speed)
+        new JoystickButton(m_joystick2, 2)
+            .toggleOnTrue(
+                new RunCommand(
+                    () -> Shooter.getInstance().setShooterSpeed(1.0),
+                    Shooter.getInstance()
+                ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter())
+                // .toggleOnFalse(
+                //     new RunCommand(
+                //         () -> Shooter.getInstance().stopShooter(),
+                //         Shooter.getInstance()
+                //     )
+            );
+
+        // thrutake
+        new JoystickButton(m_joystick2, 6)
+            .toggleOnTrue(
+                new RunCommand(
+                    () -> ThroughTake.getInstance().runThroughTake(1.0),
+                    ThroughTake.getInstance()
+                )
+            )
+            .toggleOnFalse(
+                new RunCommand(
+                    () -> ThroughTake.getInstance().stopThroughTake(),
+                    ThroughTake.getInstance()
+                )
+            );
+
+        // throughtake to shooter cmd
+        // new JoystickButton(m_joystick2, 5)
+        //     .whileTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()))
+        //     .whileFalse(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
+               // .toggleOnFalse(new RunCommand(
+            //     () -> ThroughTake.getInstance().stopThroughTake()));
+
+       /* INTAKE */
+       
+       // lower intake + start flywheels
+        // new JoystickButton(m_joystick1, 9)
+        //     .whileTrue(
+        //         new RunCommand(
+        //             () -> Intake.getInstance().moveIntakeDown(),
+        //             Intake.getInstance()
+        //         )
+        //     )
+        //     .whileFalse(
+        //         new RunCommand(
+        //             () -> Intake.getInstance().stopElevatorIntake(),
+        //             Intake.getInstance()
+        //         )
+        //     );
+
+        // raise intake
+        // new JoystickButton(m_joystick1, 11)
+        //     // .onTrue(
+        //     //     new RunCommand(
+        //     //         () -> Intake.getInstance().moveIntakeUp(),
+        //     //         Intake.getInstance()
+        //     //     )
+        //     // );
+        //     .whileTrue(
+        //         new RunCommand(
+        //             () -> Intake.getInstance().moveIntakeUp(),
+        //             Intake.getInstance()
+        //         )
+        //     )
+        //     .whileFalse(
+        //         new RunCommand(
+        //             () -> Intake.getInstance().stopElevatorIntake(),
+        //             Intake.getInstance()
+        //         )
+        //     );
+
+        // new JoystickButton(m_joystick1, 10)
+        //     .whileTrue(
+        //         new RunCommand(()-> 
+        //         Intake.getInstance().runIntake()))
+        //     .whileFalse(
+        //         new RunCommand(() ->
+        //         Intake.getInstance().stopIntake()));
     }
 
     @Override
