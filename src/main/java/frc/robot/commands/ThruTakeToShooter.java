@@ -3,6 +3,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.ThroughTake;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Shooter;
 
 public class ThruTakeToShooter extends Command {
@@ -16,6 +17,15 @@ public class ThruTakeToShooter extends Command {
 
     m_timer = new Timer();
   }
+  public static void ToggleShooterOn() {
+        ThroughTake.getInstance().runThroughTake(0.5);
+        Commands.waitSeconds(0.25);
+        Shooter.getInstance().setShooterSpeed(0.2);
+    }
+    public static void ToggleShooterOff() {
+        ThroughTake.getInstance().stopThroughTake();
+        Shooter.getInstance().setShooterSpeed(0);
+    }
 
 public void execute() {
     // shooter.getSpeed();
