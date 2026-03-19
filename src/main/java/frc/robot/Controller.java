@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.Constants.LimelightConstants;
 import frc.robot.constants.Constants.OIConstants;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.LimelightHelpers;
@@ -83,19 +82,19 @@ public class Controller extends SubsystemBase{
                 DriveTrain.getInstance()));
 
         // shooter (pv speed)
-        // new JoystickButton(m_joystick2, 4)
-        //     .toggleOnTrue(
-        //         new RunCommand(
-        //             () -> Shooter.getInstance().setShooterSpeed(Shooter.getInstance().getSpeed()),
-        //             Shooter.getInstance()
-        //         )
-        //     )
-        //     .toggleOnFalse(
-        //         new RunCommand(
-        //             () -> Shooter.getInstance().setShooterSpeed(0.0),
-        //             Shooter.getInstance()
-        //         )
-        //     );
+        new JoystickButton(m_joystick2, 4)
+            .toggleOnTrue(
+                new RunCommand(
+                    () -> Shooter.getInstance().setShooterSpeed(Shooter.getInstance().getSpeed()),
+                    Shooter.getInstance()
+                )
+            )
+            .toggleOnFalse(
+                new RunCommand(
+                    () -> Shooter.getInstance().setShooterSpeed(0.0),
+                    Shooter.getInstance()
+                )
+            );
 
         // shooter (regular speed)
         new JoystickButton(m_joystick2, 2)
@@ -179,24 +178,6 @@ public class Controller extends SubsystemBase{
         //     .whileFalse(
         //         new RunCommand(() ->
         //         Intake.getInstance().stopIntake()));
-
-        // new JoystickButton(m_joystick2, 7)
-        //     .toggleOnTrue(new InstantCommand(
-        //         () -> Climber.getInstance().motionMagicClimberUp(),
-        //         Climber.getInstance()))
-        //     .toggleOnFalse(new InstantCommand(
-        //         () -> Climber.getInstance().stopClimber(),
-        //         Climber.getInstance()
-        //     ));
-
-        // new JoystickButton(m_joystick2, 8)
-        //     .toggleOnTrue(new RunCommand(
-        //         () -> Climber.getInstance().motionMagicClimberDown(),
-        //         Climber.getInstance()))
-        //     .toggleOnFalse(new RunCommand(
-        //         () -> Climber.getInstance().stopClimber(),
-        //         Climber.getInstance()
-        //     ));
     }
 
     @Override

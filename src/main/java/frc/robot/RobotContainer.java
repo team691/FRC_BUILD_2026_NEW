@@ -135,10 +135,6 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0.7)));
         NamedCommands.registerCommand("StopShooter", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0)));
 
-        NamedCommands.registerCommand("Climb", Climber.getInstance().runOnce(() -> Climber.getInstance().motionMagicClimberUp()));
-        NamedCommands.registerCommand("Lower", Climber.getInstance().runOnce(() -> Climber.getInstance().motionMagicClimberDown()));
-
-
         // Pathplanner Registered Event Markers
         // new EventTrigger("test_pose_align_shoot").whileTrue(AlignToShoot.getInstance());
         // NamedCommands.registerCommand("test_pose_align_shoot", AlignToShoot.getInstance());
