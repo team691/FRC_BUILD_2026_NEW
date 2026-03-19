@@ -21,7 +21,8 @@ public class Climber extends SubsystemBase {
     private static final Climber m_climber = new Climber();
     public static Climber getInstance() {return m_climber;}
 
-    public static double climberRotations = 10.63;
+    // 10.63
+    public static double climberRotations = 22;
 
     public Climber () {
         climberMotor1 = new TalonFX(ClimberConstants.climberTalonDeviceIdMotor1);

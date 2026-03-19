@@ -16,7 +16,10 @@ import java.util.HashMap;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -45,8 +48,13 @@ public class Shooter extends SubsystemBase {
     // TODO: when we are not shooting/not our turn, set shooter speed to like 0.75 (constant) for moving balls to other side
     public void setShooterSpeed(double speed) {
         shooterMotor.set(speed);
-        Timer.delay(1);
+        // Timer.delay(1);
 
+    }
+
+    public void stopShooter() {
+      shooterMotor.setNeutralMode(NeutralModeValue.Brake);
+      shooterMotor.set(0);
     }
 
     public double CreateShooterSpeed(double distance, double angle_to_hub, Float constant) {

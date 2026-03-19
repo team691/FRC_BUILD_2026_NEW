@@ -127,7 +127,7 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // DriveTrain.getInstance().zeroHeading();
 
@@ -140,7 +140,7 @@ public class Robot extends LoggedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      // m_autonomousCommand.schedule();
+      m_autonomousCommand.schedule();
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
       Elastic.sendNotification(auto);
     }

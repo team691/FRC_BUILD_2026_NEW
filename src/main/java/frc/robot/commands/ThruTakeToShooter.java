@@ -8,20 +8,25 @@ import frc.robot.subsystems.Shooter;
 public class ThruTakeToShooter extends Command {
   private final ThroughTake m_thrutake;
   private final Shooter shooter;
+  private final Timer m_timer;
 
   public ThruTakeToShooter(ThroughTake m_thrutake, Shooter m_shooter) {
     this.m_thrutake = m_thrutake;
     this.shooter = m_shooter;
+
+    m_timer = new Timer();
   }
 
 public void execute() {
-    shooter.getSpeed();
+    // shooter.getSpeed();
     // double m_speed = shooter.getSpeed();
     // System.out.println("speed "+m_speed);
-    double m_speed = 0.8;
+    double m_speed = 0.9;
     shooter.setShooterSpeed(m_speed);
-    Timer.delay(0.5);
-    m_thrutake.runThroughTake(1.0); 
+    Timer.delay(1.0);
+    // m_timer.delay(0.7);
+    m_thrutake.runThroughTake(1.0);
+    // Timer.delay(0.5);
   }
 
   public void end(boolean interrupted) {

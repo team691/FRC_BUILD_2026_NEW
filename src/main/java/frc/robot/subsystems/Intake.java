@@ -65,28 +65,31 @@ public class Intake extends SubsystemBase {
     public void moveIntakeUp() {
         // intakeTalonMotor.set(0.3);
         // stopIntake();
-        stopIntake();
-        Timer time = new Timer();
-        time.start();
+        // stopIntake();
+        // Timer time = new Timer();
+        // time.start();
+        // intakeTalonMotor.set(1);
+        // if (time.hasElapsed(0.5)) {
+        //     intakeTalonMotor.set(0);
+        //     time.stop();
+        // }
+        // // intakeTalonMotor.setControl(positionRequest.withPosition(-rotationAmount));
+        // DogLog.log("Intake", "Intake up");
+        // DogLog.log("Intake", "talon current " + intakeTalonMotor.getSupplyCurrent());
+        // Elastic.sendNotification(IntakeChange);
         intakeTalonMotor.set(1);
-        if (time.hasElapsed(0.5)) {
-            intakeTalonMotor.set(0);
-        }
-        // intakeTalonMotor.setControl(positionRequest.withPosition(-rotationAmount));
-        DogLog.log("Intake", "Intake up");
-        DogLog.log("Intake", "talon current " + intakeTalonMotor.getSupplyCurrent());
-        Elastic.sendNotification(IntakeChange);
     }
    
     public void moveIntakeDown() {
         //runIntake();
-        Timer time = new Timer();
-        time.start();
+        // Timer time = new Timer();
+        // time.start();
+        // intakeTalonMotor.set(-0.6);
+        // if (time.hasElapsed(0.1)) {
+        //     intakeTalonMotor.set(0);
+        //     System.out.println("reached apex");
+        // }
         intakeTalonMotor.set(-0.6);
-        if (time.hasElapsed(0.1)) {
-            intakeTalonMotor.set(0);
-            System.out.println("reached apex");
-        }
         //intakeTalonMotor.setControl(positionRequest.withPosition(rotationAmount));
         // intakeTalonMotor.set(-1);
         // System.out.println("antigravity on");
@@ -132,7 +135,7 @@ public class Intake extends SubsystemBase {
     public void runIntake(){
         // intakeTalonMotor.set(-0.1);
         intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
-        intakeNeoMotor.set(1.0);
+        intakeNeoMotor.set(0.8);
         // intakeNeoMotor.set(0);
         DogLog.log("Intake", "Intake running");
     }
@@ -140,6 +143,12 @@ public class Intake extends SubsystemBase {
     public void stopIntake() {
         intakeNeoMotor.set(0);
         DogLog.log("Intake", "Intake stopped");
+    }
+
+    public void stopElevatorIntake() {
+        intakeTalonMotor.set(0);
+        intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
+
     }
    
     // Adjustable anti-gravity parameters
