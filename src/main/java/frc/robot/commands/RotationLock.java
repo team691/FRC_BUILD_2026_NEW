@@ -49,10 +49,11 @@ public class RotationLock extends Command {
                 double rotError = targetHeading.minus(currHeading).getDegrees();
                 double angularVelocity = rotController.calculate(currHeading.getDegrees(), rotError);
 
-                ChassisSpeeds speeds = new ChassisSpeeds(0, 0, angularVelocity);
+                // ChassisSpeeds speeds = new ChassisSpeeds(0, 0, angularVelocity);
                 // drive
-                SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
-                driveTrain.setModuleStates(moduleStates);
+                // SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+                // driveTrain.setModuleStates(moduleStates);
+                driveTrain.drive(0, 0, angularVelocity, false, false);
             }
     }
 
