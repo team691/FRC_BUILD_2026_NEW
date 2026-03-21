@@ -140,37 +140,37 @@ public class DriveTrain extends SubsystemBase {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     
-    // try{
-    //   config = RobotConfig.fromGUISettings();
-    //   AutoBuilder.configure(
-    //   this::getPose, // Robot pose supplier
-    //   this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-    //   this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-    //   (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-    //   // new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
-    //   new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-    //                 new PIDConstants(4.5, 0.0, 0.2,  0.0), // Translation PID constants P between 5 and 6
-    //                 new PIDConstants(2.5, 0.0, 0.3, 0.0) // Rotation PID constants
-    //         ),
-    //   config, // The robot configuration
-    //   () -> {
-    //     var alliance = DriverStation.getAlliance();
-    //     if (alliance.isPresent()) {
-    //       return alliance.get() == DriverStation.Alliance.Red;
-    //     }
-    //     return false;
-    //     // Boolean supplier that controls when the path will be mirrored for the red alliance
-    //     // This will flip the path being followed to the red side of the field.
-    //     // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-    //   },
-    //   this // Reference to this subsystem to set requirements
-    // );
-    // // Pathfinding.setPathfinder(new LocalADStarAK());
-    // } catch (Exception e) {
-    //   // Handle exception as needed
-    //   e.printStackTrace();
-    //   throw new RuntimeException("Failed to configure AutoBuilder", e);
-    // }
+    try{
+      config = RobotConfig.fromGUISettings();
+      AutoBuilder.configure(
+      this::getPose, // Robot pose supplier
+      this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+      this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+      (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+      // new PPLTVController(0.02), // PPLTVController is the built in path following controller for differential drive trains
+      new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(4.5, 0.0, 0.2,  0.0), // Translation PID constants P between 5 and 6
+                    new PIDConstants(2.5, 0.0, 0.3, 0.0) // Rotation PID constants
+            ),
+      config, // The robot configuration
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+        // Boolean supplier that controls when the path will be mirrored for the red alliance
+        // This will flip the path being followed to the red side of the field.
+        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+      },
+      this // Reference to this subsystem to set requirements
+    );
+    // Pathfinding.setPathfinder(new LocalADStarAK());
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+      throw new RuntimeException("Failed to configure AutoBuilder", e);
+    }
 }
 
   // Updates odometry periodically
