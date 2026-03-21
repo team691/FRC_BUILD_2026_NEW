@@ -13,10 +13,12 @@ import frc.robot.constants.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.LimelightHelpers;
+import frc.robot.commands.RotationLock;
 // import frc.robot.commands.AutoAlign;
 import frc.robot.commands.ThruTakeToShooter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ThroughTake;
+import org.photonvision.PhotonCamera;
 
 public class Controller extends SubsystemBase{
     Joystick m_joystick1 = new Joystick(0);
@@ -75,6 +77,11 @@ public class Controller extends SubsystemBase{
                 () -> DriveTrain.getInstance().setX(),
                 DriveTrain.getInstance()));
 
+        new JoystickButton(m_joystick2, 3)
+            .toggleOnTrue(new RunCommand(
+                () -> new RotationLock(new PhotonCamera(getName()), DriveTrain.getInstance())
+            )); // !!!Will require testing to ensure compatibility!!!
+
         // This button for the DRIVER will zero the gyro's angle
         new JoystickButton(m_joystick1, 12)
             .whileTrue(new RunCommand( // test with InstantCommand
@@ -126,10 +133,10 @@ public class Controller extends SubsystemBase{
             );
 
         // throughtake to shooter cmd
-        // new JoystickButton(m_joystick2, 5)
-        //     .whileTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()))
-        //     .whileFalse(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
-               // .toggleOnFalse(new RunCommand(
+        new JoystickButton(m_joystick2, 5)
+            .toggleOnTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
+            // .toggleOnFalse(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
+            //    .toggleOnFalse(new RunCommand(
             //     () -> ThroughTake.getInstance().stopThroughTake()));
 
        /* INTAKE */

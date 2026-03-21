@@ -33,7 +33,8 @@ public void execute() {
     // System.out.println("speed "+m_speed);
     double m_speed = 0.9;
     shooter.setShooterSpeed(m_speed);
-    Timer.delay(1.0);
+    // Timer.delay(1.0);
+    Commands.waitSeconds(0.5);
     // m_timer.delay(0.7);
     m_thrutake.runThroughTake(1.0);
     // Timer.delay(0.5);
