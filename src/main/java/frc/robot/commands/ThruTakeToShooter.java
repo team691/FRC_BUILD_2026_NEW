@@ -1,22 +1,21 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ThroughTake;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Shooter;
 
+// TODO: run thrutake + shooter in reverse when amps >30amps, run throughtake + shooter forward once amps <20amp avg
+
 public class ThruTakeToShooter extends Command {
   private final ThroughTake m_thrutake;
   private final Shooter shooter;
-  private final Timer m_timer;
 
   public ThruTakeToShooter(ThroughTake m_thrutake, Shooter m_shooter) {
     this.m_thrutake = m_thrutake;
     this.shooter = m_shooter;
-
-    m_timer = new Timer();
   }
+
   public static void ToggleShooterOn() {
         ThroughTake.getInstance().runThroughTake(0.5);
         Commands.waitSeconds(0.25);
