@@ -12,15 +12,16 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
 import java.util.HashMap;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 //import frc.Buttons;
@@ -31,23 +32,49 @@ public class Shooter extends SubsystemBase {
     public static Shooter getInstance() {return m_shooter;}
     public static final String cam_thing = "HD_USB_Camera";
     private final PhotonCamera camza = new PhotonCamera(cam_thing);
+    SimpleTimer sTimer = new SimpleTimer();
     Transform3d position = new Transform3d();
      HashMap<Integer, Float> AprilTagHashMap = new HashMap<>();
 
     TalonFX shooterMotor;
+    boolean x;
+    boolean y;
     
-
     public Shooter () {
         shooterMotor = new TalonFX(ShooterConstants.shooterTalonDeviceId);
         AprilTagHashMap.put(2, 50.0f);
         AprilTagHashMap.put(11, 50.0f);
         AprilTagHashMap.put(3, 53.0f);
         AprilTagHashMap.put(4, 53.0f);
+        x = false;
+        y = false;
     }
 
     // TODO: when we are not shooting/not our turn, set shooter speed to like 0.75 (constant) for moving balls to other side
     public void setShooterSpeed(double speed) {
+        System.out.println("amps: " + shooterMotor.getSupplyCurrent());
+
+        // if(!x && !y){
+        //   shooterMotor.set(speed);
+        // }
+        
+        sTimer.start();
+        // StatusSignal maxAmps = 10;
+        double maxAmps = 20;
         shooterMotor.set(speed);
+
+        // Commands.waitSeconds(3.0);
+        
+        // if (shooterMotor.getSupplyCurrent().getValueAsDouble() >= 20) {
+        //   shooterMotor.set(-speed);
+        //   System.out.println("if statement is working");
+        // }
+        // if (shooterMotor.getSupplyCurrent().getValueAsDouble() >= maxAmps) {
+        //   shooterMotor.set(-speed);
+        // }
+        // else {
+        //   shooterMotor.set(speed);
+        // }
         // Timer.delay(1);
 
     }

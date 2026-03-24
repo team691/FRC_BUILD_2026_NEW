@@ -24,6 +24,7 @@ public class Controller extends SubsystemBase{
     Joystick m_joystick1 = new Joystick(0);
     Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
     XboxController m_controller = new XboxController(2);
+    double shooterSpeedPercent = 0.845;
 
     ThruTakeToShooter m_thruTakeToShooter = new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance());
 
@@ -77,11 +78,6 @@ public class Controller extends SubsystemBase{
                 () -> DriveTrain.getInstance().setX(),
                 DriveTrain.getInstance()));
 
-        new JoystickButton(m_joystick2, 3)
-            .toggleOnTrue(new RunCommand(
-                () -> new RotationLock(new PhotonCamera(getName()), DriveTrain.getInstance())
-            )); // !!!Will require testing to ensure compatibility!!!
-
         // This button for the DRIVER will zero the gyro's angle
         new JoystickButton(m_joystick1, 12)
             .whileTrue(new RunCommand( // test with InstantCommand
@@ -89,52 +85,86 @@ public class Controller extends SubsystemBase{
                 DriveTrain.getInstance()));
 
         // shooter (pv speed)
-        new JoystickButton(m_joystick2, 4)
+        new JoystickButton(m_joystick1, 4)
             .toggleOnTrue(
                 new RunCommand(
-                    () -> Shooter.getInstance().setShooterSpeed(Shooter.getInstance().getSpeed()),
-                    Shooter.getInstance()
-                )
-            )
-            .toggleOnFalse(
-                new RunCommand(
-                    () -> Shooter.getInstance().setShooterSpeed(0.0),
-                    Shooter.getInstance()
-                )
+                    () -> ThroughTake.getInstance().runThroughTake(.6),
+                    ThroughTake.getInstance()
+                ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
             );
+            
 
         // shooter (regular speed)
         new JoystickButton(m_joystick2, 2)
             .toggleOnTrue(
                 new RunCommand(
-                    () -> Shooter.getInstance().setShooterSpeed(1.0),
+                    () -> Shooter.getInstance().setShooterSpeed(0.7),
                     Shooter.getInstance()
                 ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter())
-                // .toggleOnFalse(
-                //     new RunCommand(
-                //         () -> Shooter.getInstance().stopShooter(),
-                //         Shooter.getInstance()
-                //     )
-            );
-
-        // thrutake
-        new JoystickButton(m_joystick2, 6)
+                );
+        
+        new JoystickButton(m_joystick2, 11)
             .toggleOnTrue(
                 new RunCommand(
-                    () -> ThroughTake.getInstance().runThroughTake(1.0),
-                    ThroughTake.getInstance()
-                )
-            )
-            .toggleOnFalse(
+                    () -> Shooter.getInstance().setShooterSpeed(-0.75),
+                    Shooter.getInstance()
+                ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
+            
+        // thrutake
+        new JoystickButton(m_joystick1, 6)
+            .toggleOnTrue(
                 new RunCommand(
-                    () -> ThroughTake.getInstance().stopThroughTake(),
+                    () -> ThroughTake.getInstance().runThroughTake(-0.7),
                     ThroughTake.getInstance()
-                )
+                ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
             );
+            // .toggleOnFalse(
+            //     new RunCommand(
+            //         () -> ThroughTake.getInstance().stopThroughTake(),
+            //         ThroughTake.getInstance()
+            //     )
+            // );
 
-        // throughtake to shooter cmd
-        new JoystickButton(m_joystick2, 5)
+    new JoystickButton(m_joystick2, 5)
             .toggleOnTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
+
+                    // new JoystickButton(m_joystick2, 3)
+        //     .toggleOnTrue(new RunCommand(
+        //         () -> new RotationLock(new PhotonCamera(getName()), DriveTrain.getInstance())
+        //     )); // !!!Will require testing to ensure compatibility!!!
+
+        // new JoystickButton(m_joystick2, 4)
+        //     .toggleOnTrue(
+        //         new RunCommand(
+        //             () -> Shooter.getInstance().setShooterSpeed(Shooter.getInstance().getSpeed()),
+        //             Shooter.getInstance()
+        //         )
+        //     )
+        //     .toggleOnFalse(
+        //         new RunCommand(
+        //             () -> Shooter.getInstance().setShooterSpeed(0.0),
+        //             Shooter.getInstance()
+        //         )
+        //     );
+        /* 
+            new JoystickButton(m_joystick2, 7) 
+                .onTrue(shooterSpeedPercent += 5);
+        */
+        // new JoystickButton(m_joystick2, 6)
+        //     .toggleOnTrue(
+        //         new RunCommand(
+        //             () -> Shooter.getInstance().setShooterSpeed(shooterSpeedPercent),
+        //             Shooter.getInstance()
+        //         )
+        //     )
+        //     .toggleOnFalse(
+        //         new RunCommand(
+        //             () -> Shooter.getInstance().setShooterSpeed(0.0),
+        //             Shooter.getInstance()
+        //         )
+        //     );
+            
+        // throughtake to shooter cmd
             // .toggleOnFalse(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
             //    .toggleOnFalse(new RunCommand(
             //     () -> ThroughTake.getInstance().stopThroughTake()));
