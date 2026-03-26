@@ -103,7 +103,7 @@ public class Controller extends SubsystemBase{
             
 
         // shooter (regular speed)
-        new JoystickButton(m_joystick2, 2)
+        new JoystickButton(m_joystick2, 4)
             .toggleOnTrue(
                 new RunCommand(
                     () -> Shooter.getInstance().setShooterSpeed(0.7),
@@ -111,22 +111,54 @@ public class Controller extends SubsystemBase{
                 ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter())
                 );
         
-        new JoystickButton(m_joystick2, 11)
+        new JoystickButton(m_joystick2, 6)
             .toggleOnTrue(
                 new RunCommand(
                     () -> Shooter.getInstance().setShooterSpeed(-0.75),
                     Shooter.getInstance()
                 ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
-            
-        // thrutake
-            // .toggleOnFalse(
-            //     new RunCommand(
-            //         () -> ThroughTake.getInstance().stopThroughTake(),
-            //         ThroughTake.getInstance()
-            //     )
-            // );
 
-    new JoystickButton(m_joystick2, 5)
+/* INTAKE */
+       
+       // lower intake + start flywheels
+        new JoystickButton(m_joystick2, 3)
+            .whileTrue(
+                new RunCommand(
+                    () -> Intake.getInstance().moveIntakeDown(),
+                    Intake.getInstance()
+                )
+            )
+            .whileFalse(
+                new RunCommand(
+                    () -> Intake.getInstance().stopElevatorIntake(),
+                    Intake.getInstance()
+                )
+            );
+
+        // raise intake
+        new JoystickButton(m_joystick2, 5)
+            .whileTrue(
+                new RunCommand(
+                    () -> Intake.getInstance().moveIntakeUp(),
+                    Intake.getInstance()
+                )
+            )
+            .whileFalse(
+                new RunCommand(
+                    () -> Intake.getInstance().stopElevatorIntake(),
+                    Intake.getInstance()
+                )
+            );
+
+        new JoystickButton(m_joystick2, 2)
+            .whileTrue(
+                new RunCommand(()-> 
+                Intake.getInstance().runIntake()))
+            .whileFalse(
+                new RunCommand(() ->
+                Intake.getInstance().stopIntake()));
+            
+    new JoystickButton(m_joystick1, 2)
             .toggleOnTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
 
                     // new JoystickButton(m_joystick2, 3)
@@ -169,52 +201,6 @@ public class Controller extends SubsystemBase{
             // .toggleOnFalse(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
             //    .toggleOnFalse(new RunCommand(
             //     () -> ThroughTake.getInstance().stopThroughTake()));
-
-       /* INTAKE */
-       
-       // lower intake + start flywheels
-        // new JoystickButton(m_joystick1, 9)
-        //     .whileTrue(
-        //         new RunCommand(
-        //             () -> Intake.getInstance().moveIntakeDown(),
-        //             Intake.getInstance()
-        //         )
-        //     )
-        //     .whileFalse(
-        //         new RunCommand(
-        //             () -> Intake.getInstance().stopElevatorIntake(),
-        //             Intake.getInstance()
-        //         )
-        //     );
-
-        // raise intake
-        // new JoystickButton(m_joystick1, 11)
-        //     // .onTrue(
-        //     //     new RunCommand(
-        //     //         () -> Intake.getInstance().moveIntakeUp(),
-        //     //         Intake.getInstance()
-        //     //     )
-        //     // );
-        //     .whileTrue(
-        //         new RunCommand(
-        //             () -> Intake.getInstance().moveIntakeUp(),
-        //             Intake.getInstance()
-        //         )
-        //     )
-        //     .whileFalse(
-        //         new RunCommand(
-        //             () -> Intake.getInstance().stopElevatorIntake(),
-        //             Intake.getInstance()
-        //         )
-        //     );
-
-        // new JoystickButton(m_joystick1, 10)
-        //     .whileTrue(
-        //         new RunCommand(()-> 
-        //         Intake.getInstance().runIntake()))
-        //     .whileFalse(
-        //         new RunCommand(() ->
-        //         Intake.getInstance().stopIntake()));
     }
 
     @Override
