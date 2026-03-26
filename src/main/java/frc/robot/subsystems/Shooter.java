@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -12,11 +13,18 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
 import java.util.HashMap;
+
+import javax.sound.sampled.Control;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -37,22 +45,36 @@ public class Shooter extends SubsystemBase {
      HashMap<Integer, Float> AprilTagHashMap = new HashMap<>();
 
     TalonFX shooterMotor;
-    boolean x;
-    boolean y;
-    
+    private final VelocityVoltage velocityRequest = new VelocityVoltage(0);
+
     public Shooter () {
         shooterMotor = new TalonFX(ShooterConstants.shooterTalonDeviceId);
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.Slot0.kP = 0.11;
+        config.Slot0.kI = 0.0;
+        config.Slot0.kD = 0.0;
+        config.Slot0.kV = 0.12;
+
+        shooterMotor.getConfigurator().apply(config);
+
         AprilTagHashMap.put(2, 50.0f);
         AprilTagHashMap.put(11, 50.0f);
         AprilTagHashMap.put(3, 53.0f);
         AprilTagHashMap.put(4, 53.0f);
-        x = false;
-        y = false;
+    }
+
+    public void setShooterRPM(double targetRPM) {
+      double targetRPS = targetRPM / 60.0;
+      System.out.println("current RPM: " + shooterMotor.getVelocity().getValueAsDouble()*60);
+      System.out.println("amps: " + shooterMotor.getSupplyCurrent());
+      shooterMotor.setControl(velocityRequest.withVelocity(targetRPS));
     }
 
     // TODO: when we are not shooting/not our turn, set shooter speed to like 0.75 (constant) for moving balls to other side
     public void setShooterSpeed(double speed) {
         System.out.println("amps: " + shooterMotor.getSupplyCurrent());
+
+
 
         // if(!x && !y){
         //   shooterMotor.set(speed);

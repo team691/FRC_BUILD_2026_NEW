@@ -92,6 +92,14 @@ public class Controller extends SubsystemBase{
                     ThroughTake.getInstance()
                 ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
             );
+
+        new JoystickButton(m_joystick1, 6)
+            .toggleOnTrue(
+                new RunCommand(
+                    () -> ThroughTake.getInstance().runThroughTake(-0.7),
+                    ThroughTake.getInstance()
+                ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
+            );
             
 
         // shooter (regular speed)
@@ -111,13 +119,6 @@ public class Controller extends SubsystemBase{
                 ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
             
         // thrutake
-        new JoystickButton(m_joystick1, 6)
-            .toggleOnTrue(
-                new RunCommand(
-                    () -> ThroughTake.getInstance().runThroughTake(-0.7),
-                    ThroughTake.getInstance()
-                ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
-            );
             // .toggleOnFalse(
             //     new RunCommand(
             //         () -> ThroughTake.getInstance().stopThroughTake(),
