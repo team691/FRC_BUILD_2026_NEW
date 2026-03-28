@@ -66,29 +66,18 @@ public class Intake extends SubsystemBase {
         intakeTalonMotor.getConfigurator().apply(talonFXConfigs);
     }
 
-    // Optional runtime config
-    public void setMoveDurations(double upSec, double downSec) {
-        moveUpDurationSec = upSec;
-        moveDownDurationSec = downSec;
-    }
-
     public void moveIntakeUp() {
-        stopIntake();
-        timedMoveState = TimedMoveState.MOVING_UP;
-        moveTimer.restart();
         intakeTalonMotor.set(moveUpSpeed);
     }
    
     public void moveIntakeDown() {
-        // runIntake();
-        timedMoveState = TimedMoveState.MOVING_DOWN;
-        moveTimer.restart();
         intakeTalonMotor.set(moveDownSpeed);
         DogLog.log("Intake", "Intake down");
+        intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 
     public void runIntake(){
-        intakeNeoMotor.set(0.8);
+        intakeNeoMotor.set(0.85);
         DogLog.log("Intake", "Intake running");
     }
 
@@ -99,7 +88,7 @@ public class Intake extends SubsystemBase {
 
     public void stopElevatorIntake() {
         intakeTalonMotor.set(0);
-        intakeNeoMotor.set(0);
+        // intakeNeoMotor.set(0);
         intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
         timedMoveState = TimedMoveState.IDLE;
         moveTimer.stop();

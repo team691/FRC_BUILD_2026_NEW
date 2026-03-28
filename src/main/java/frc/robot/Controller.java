@@ -106,20 +106,11 @@ public class Controller extends SubsystemBase{
         new JoystickButton(m_joystick2, 4)
             .toggleOnTrue(
                 new RunCommand(
-                    // () -> Shooter.getInstance().setShooterSpeed(0.7),
-                    () -> Shooter.getInstance().setShooterRPM(10000),
+                    () -> Shooter.getInstance().setShooterRPM(5000),
                     Shooter.getInstance()
                 )
-                .finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
-                // ).fin
-                
-            // .whileFalse(
-            //     new RunCommand(
-            //         () -> Shooter.getInstance().stopShooter(),
-            //         Shooter.getInstance()
-            //     )
-            // );
-            
+                .finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));                
+
         new JoystickButton(m_joystick2, 6)
             .toggleOnTrue(
                 new RunCommand(
