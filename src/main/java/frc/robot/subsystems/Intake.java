@@ -80,7 +80,7 @@ public class Intake extends SubsystemBase {
     }
    
     public void moveIntakeDown() {
-        runIntake();
+        // runIntake();
         timedMoveState = TimedMoveState.MOVING_DOWN;
         moveTimer.restart();
         intakeTalonMotor.set(moveDownSpeed);
@@ -99,6 +99,7 @@ public class Intake extends SubsystemBase {
 
     public void stopElevatorIntake() {
         intakeTalonMotor.set(0);
+        intakeNeoMotor.set(0);
         intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
         timedMoveState = TimedMoveState.IDLE;
         moveTimer.stop();

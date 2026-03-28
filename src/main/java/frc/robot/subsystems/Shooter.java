@@ -68,6 +68,13 @@ public class Shooter extends SubsystemBase {
       System.out.println("current RPM: " + shooterMotor.getVelocity().getValueAsDouble()*60);
       System.out.println("amps: " + shooterMotor.getSupplyCurrent());
       shooterMotor.setControl(velocityRequest.withVelocity(targetRPS));
+
+      // TODO: test tolerance code
+      // double tolerance = 1.0;
+
+      // if (Math.abs(shooterMotor.getVelocity().getValueAsDouble() - targetRPS) <= tolerance) {
+      //   ThroughTake.getInstance().runThroughTake(0.7);
+      // }
     }
 
     // TODO: when we are not shooting/not our turn, set shooter speed to like 0.75 (constant) for moving balls to other side

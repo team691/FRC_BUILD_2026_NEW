@@ -47,7 +47,7 @@ public class Controller extends SubsystemBase{
     }
     private double setSpeed() {
         if (m_joystick1.getRawButton(1) == true) {
-            return 2.0; // 9.0
+            return 4.0; // 9.0
         }
         else {
             return 20.0; // 2.0
@@ -60,8 +60,8 @@ public class Controller extends SubsystemBase{
                   
                   ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
                   ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
-                //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 3.25,
-                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
+                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 10,
+                //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
                   true, true),
               DriveTrain.getInstance()));
         configureButtonBindings();
@@ -86,17 +86,17 @@ public class Controller extends SubsystemBase{
 
         // shooter (pv speed)
         new JoystickButton(m_joystick1, 4)
-            .toggleOnTrue(
+            .whileTrue(
                 new RunCommand(
-                    () -> ThroughTake.getInstance().runThroughTake(.6),
+                    () -> ThroughTake.getInstance().runThroughTake(0.6),
                     ThroughTake.getInstance()
                 ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
             );
 
         new JoystickButton(m_joystick1, 6)
-            .toggleOnTrue(
+            .whileTrue(
                 new RunCommand(
-                    () -> ThroughTake.getInstance().runThroughTake(-0.7),
+                    () -> ThroughTake.getInstance().runThroughTake(-0.5),
                     ThroughTake.getInstance()
                 ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
             );
@@ -106,11 +106,20 @@ public class Controller extends SubsystemBase{
         new JoystickButton(m_joystick2, 4)
             .toggleOnTrue(
                 new RunCommand(
-                    () -> Shooter.getInstance().setShooterSpeed(0.7),
+                    // () -> Shooter.getInstance().setShooterSpeed(0.7),
+                    () -> Shooter.getInstance().setShooterRPM(10000),
                     Shooter.getInstance()
-                ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter())
-                );
-        
+                )
+                .finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
+                // ).fin
+                
+            // .whileFalse(
+            //     new RunCommand(
+            //         () -> Shooter.getInstance().stopShooter(),
+            //         Shooter.getInstance()
+            //     )
+            // );
+            
         new JoystickButton(m_joystick2, 6)
             .toggleOnTrue(
                 new RunCommand(
@@ -158,8 +167,8 @@ public class Controller extends SubsystemBase{
                 new RunCommand(() ->
                 Intake.getInstance().stopIntake()));
             
-    new JoystickButton(m_joystick1, 2)
-            .toggleOnTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
+            new JoystickButton(m_joystick1, 2)
+                    .toggleOnTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
 
                     // new JoystickButton(m_joystick2, 3)
         //     .toggleOnTrue(new RunCommand(
