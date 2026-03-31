@@ -1,0 +1,13 @@
+joystick 1 (left)
+
+- button 3: moves intake down
+- button 4: moves intake up
+- button 5: runs ball intake (hold down)
+- button 12: reset gyro
+
+joystick 2 (right)
+
+- button 2: setting normal shooter speed 50%
+- button 4: (getting shooter speed from tag) toggle
+- button 5: running thvcroughtake to shooter
+- button 6: pushing out balls from shooter (set speed)

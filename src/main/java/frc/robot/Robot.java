@@ -57,11 +57,6 @@ public class Robot extends LoggedRobot {
     m_navx.reset(); // reset parameters yaw, pitch, roll
     m_navx.zeroYaw(); // setting zero yaw
 
-    // Set up data receivers & replay source
-    LimelightHelpers.setCameraPose_RobotSpace(LimelightConstants.limelight_three, 
-      0.5, 0.0, 0.5,  // forward, side, up (meters)
-      0.0, 30.0, 0.0  // roll, pitch, yaw (degrees)
-    );
     
         // Set up data receivers & replay source
         switch (CURRENT_ROBOT_MODE) {
@@ -103,7 +98,6 @@ public class Robot extends LoggedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    Logger.recordOutput("RobotPose", new Pose2d());
     
     // LimelightHelpers.SetRobotOrientation("limelight", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
     // m_vision.setRobotOrientation(m_navx.getYaw(), 0.0, 0.0, 0.0, 0.0, 0.0);

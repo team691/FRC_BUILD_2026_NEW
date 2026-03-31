@@ -9,7 +9,7 @@ import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 import org.littletonrobotics.junction.LoggedPowerDistribution;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+// import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -126,14 +126,14 @@ public class RobotContainer {
 
         SmartDashboard.putData("Field", field);
 
-        NamedCommands.registerCommand("IntakeOn", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeDown()));
-        NamedCommands.registerCommand("StopIntake", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeUp()));
+        // NamedCommands.registerCommand("IntakeOn", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeDown()));
+        // NamedCommands.registerCommand("StopIntake", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeUp()));
 
-        NamedCommands.registerCommand("ThruTake", ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().runThroughTake(1)));
-        NamedCommands.registerCommand("StopThruTake", ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().stopThroughTake()));
+        // NamedCommands.registerCommand("ThruTake", ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().runThroughTake(1)));
+        // NamedCommands.registerCommand("StopThruTake", ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().stopThroughTake()));
         
-        NamedCommands.registerCommand("Shoot", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0.7)));
-        NamedCommands.registerCommand("StopShooter", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0)));
+        // NamedCommands.registerCommand("Shoot", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0.7)));
+        // NamedCommands.registerCommand("StopShooter", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0)));
 
         // Pathplanner Registered Event Markers
         // new EventTrigger("test_pose_align_shoot").whileTrue(AlignToShoot.getInstance());

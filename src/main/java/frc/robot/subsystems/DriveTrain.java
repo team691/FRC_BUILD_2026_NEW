@@ -54,8 +54,8 @@ public class DriveTrain extends SubsystemBase {
   public final Notification ReZero = new Notification(NotificationLevel.INFO, "Reset Gyro", "Gyro has been reseted.");
 
   // Limelight Configuration for global pose estimator
-  LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.limelight_three);
-  public boolean doRejectUpdate = false;
+  // LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(LimelightConstants.limelight_three);
+  // public boolean doRejectUpdate = false;
   
   public static DriveTrain getInstance() {
       return m_DriveTrain;
@@ -130,7 +130,7 @@ public class DriveTrain extends SubsystemBase {
       "Mechanism_Characteristic")
   );
 
-  String m_detectclass = LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three);
+  // String m_detectclass = LimelightHelpers.getDetectorClass(LimelightConstants.limelight_three);
 
   // Creates new Drive Subsystem
   private DriveTrain() {
@@ -321,34 +321,34 @@ public class DriveTrain extends SubsystemBase {
   //   return pathToObjectCommand;
   // }
   
-  public Command ppLLTestAlign() {
-    // Pose2d targetPose;
-    // public static RawDetection[] getRawDetections(LimelightConstants.limelight_three);
-    Pose2d targetPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LimelightConstants.limelight_two);
-    // Pose2d targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));;
-    // try {
-    //   targetPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LimelightConstants.limelight_two);
-    //   System.out.println("Target Found");
-    // }
-    // catch (Exception e) {
-    //   System.out.println("TARGET NOT FOUND");
-    //   targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));
-    // }
-    PathConstraints constraints = new PathConstraints(
-      3.0, 4.0,
-     Units.degreesToRadians(540), Units.degreesToRadians(720)
-    );
+  // public Command ppLLTestAlign() {
+  //   // Pose2d targetPose;
+  //   // public static RawDetection[] getRawDetections(LimelightConstants.limelight_three);
+  //   // Pose2d targetPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LimelightConstants.limelight_two);
+  //   // Pose2d targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));;
+  //   // try {
+  //   //   targetPose = LimelightHelpers.getBotPose2d_wpiBlue(Constants.LimelightConstants.limelight_two);
+  //   //   System.out.println("Target Found");
+  //   // }
+  //   // catch (Exception e) {
+  //   //   System.out.println("TARGET NOT FOUND");
+  //   //   targetPose = new Pose2d(20, 15, Rotation2d.fromDegrees(180));
+  //   // }
+  //   PathConstraints constraints = new PathConstraints(
+  //     3.0, 4.0,
+  //    Units.degreesToRadians(540), Units.degreesToRadians(720)
+  //   );
 
-    Command pathfindingCommand = AutoBuilder.pathfindToPose(
-      targetPose,
-      constraints,
-      1.0
-    )
-    .andThen(new InstantCommand(() -> System.out.println("Done")))
-    .beforeStarting(new InstantCommand(() -> System.out.println("Start")));
+  //   Command pathfindingCommand = AutoBuilder.pathfindToPose(
+  //     targetPose,
+  //     constraints,
+  //     1.0
+  //   )
+  //   .andThen(new InstantCommand(() -> System.out.println("Done")))
+  //   .beforeStarting(new InstantCommand(() -> System.out.println("Start")));
 
-    return pathfindingCommand;
-  }
+  //   return pathfindingCommand;
+  // }
 
   public void driveRobotRelative(ChassisSpeeds speeds) {
     this.drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, true);

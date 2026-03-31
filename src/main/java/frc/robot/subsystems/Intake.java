@@ -33,12 +33,7 @@ public class Intake extends SubsystemBase {
     // Timed move settings (configurable)
     private double moveUpSpeed = 1.0;
     private double moveDownSpeed = -0.6;
-    private double moveUpDurationSec = 0.75;
-    private double moveDownDurationSec = 0.75;
 
-    private enum TimedMoveState { IDLE, MOVING_UP, MOVING_DOWN }
-    private TimedMoveState timedMoveState = TimedMoveState.IDLE;
-    private final Timer moveTimer = new Timer();
 
 
     public Intake () {
@@ -67,50 +62,29 @@ public class Intake extends SubsystemBase {
     }
 
     public void moveIntakeUp() {
+        System.out.println(intakeTalonMotor.getSupplyCurrent().getValueAsDouble());
         intakeTalonMotor.set(moveUpSpeed);
     }
    
     public void moveIntakeDown() {
         intakeTalonMotor.set(moveDownSpeed);
-        DogLog.log("Intake", "Intake down");
+        // DogLog.log("Intake", "Intake down");
         intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 
     public void runIntake(){
         intakeNeoMotor.set(0.85);
-        DogLog.log("Intake", "Intake running");
+        // DogLog.log("Intake", "Intake running");
     }
 
     public void stopIntake() {
         intakeNeoMotor.set(0);
-        DogLog.log("Intake", "Intake stopped");
+        // DogLog.log("Intake", "Intake stopped");
     }
 
     public void stopElevatorIntake() {
         intakeTalonMotor.set(0);
         // intakeNeoMotor.set(0);
-        intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
-        timedMoveState = TimedMoveState.IDLE;
-        moveTimer.stop();
-        moveTimer.reset();
-    }
-
-    @Override
-    public void periodic() {
-        switch (timedMoveState) {
-            case MOVING_UP:
-                if (moveTimer.hasElapsed(moveUpDurationSec)) {
-                    stopElevatorIntake();
-                }
-                break;
-            case MOVING_DOWN:
-                if (moveTimer.hasElapsed(moveDownDurationSec)) {
-                    stopElevatorIntake();
-                }
-                break;
-            case IDLE:
-            default:
-                break;
-        }
+        // intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 }

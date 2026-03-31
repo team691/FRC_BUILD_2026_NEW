@@ -13,11 +13,12 @@ import frc.robot.constants.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.LimelightHelpers;
-import frc.robot.commands.RotationLock;
 // import frc.robot.commands.AutoAlign;
 import frc.robot.commands.ThruTakeToShooter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ThroughTake;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.photonvision.PhotonCamera;
 
 public class Controller extends SubsystemBase{
@@ -25,8 +26,10 @@ public class Controller extends SubsystemBase{
     Joystick m_joystick2 = new Joystick(OIConstants.kDriverControllerPort2);
     XboxController m_controller = new XboxController(2);
     double shooterSpeedPercent = 0.845;
-
+    PhotonCamera mustyCamera = new PhotonCamera(getName());
+    double RPMshooter  = 2000; // 4500
     ThruTakeToShooter m_thruTakeToShooter = new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance());
+    
 
     // values will be between 0 and 1 in this map
     private double[] PowerMap =
@@ -58,13 +61,14 @@ public class Controller extends SubsystemBase{
         DriveTrain.getInstance().setDefaultCommand(new RunCommand(
               () -> DriveTrain.getInstance().drive(
                   
-                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
-                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick1.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
-                  (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * 10,
+                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick2.getY(), OIConstants.kDriveDeadband)) * setSpeed() , //m_operator.getRawAxis(3)
+                  ReturnValueFromMap(MathUtil.applyDeadband(m_joystick2.getX(), OIConstants.kDriveDeadband)) * setSpeed() , // * m_sonar.getSpeed(sonarOn)
+                  (-MathUtil.applyDeadband(m_joystick1.getZ(), OIConstants.kDriveDeadband)) * 10,
                 //   (-MathUtil.applyDeadband(m_joystick2.getZ(), OIConstants.kDriveDeadband)) * setSpeed(),
                   true, true),
               DriveTrain.getInstance()));
         configureButtonBindings();
+        // SmartDashboard.putNumber("Shooter RPM", RPMshooter);
     }
 
     private void configureButtonBindings() {
@@ -72,20 +76,8 @@ public class Controller extends SubsystemBase{
         // lower intake with flywheel running, raise intake
         // when normal flywheel intake runs, set raise/lower intake to -0.1 speed to ensure it stays there
         // climber
-
-        new JoystickButton(m_joystick2, 12)
-            .whileTrue(new RunCommand(
-                () -> DriveTrain.getInstance().setX(),
-                DriveTrain.getInstance()));
-
-        // This button for the DRIVER will zero the gyro's angle
-        new JoystickButton(m_joystick1, 12)
-            .whileTrue(new RunCommand( // test with InstantCommand
-                () -> DriveTrain.getInstance().zeroHeading(),
-                DriveTrain.getInstance()));
-
         // shooter (pv speed)
-        new JoystickButton(m_joystick1, 4)
+        new JoystickButton(m_joystick2, 4)
             .whileTrue(
                 new RunCommand(
                     () -> ThroughTake.getInstance().runThroughTake(0.6),
@@ -93,50 +85,34 @@ public class Controller extends SubsystemBase{
                 ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
             );
 
-        new JoystickButton(m_joystick1, 6)
+        new JoystickButton(m_joystick2, 3)
             .whileTrue(
                 new RunCommand(
                     () -> ThroughTake.getInstance().runThroughTake(-0.5),
                     ThroughTake.getInstance()
                 ).finallyDo((interrupted) -> ThroughTake.getInstance().stopThroughTake())
             );
-            
 
-        // shooter (regular speed)
-        new JoystickButton(m_joystick2, 4)
-            .toggleOnTrue(
-                new RunCommand(
-                    () -> Shooter.getInstance().setShooterRPM(5000),
-                    Shooter.getInstance()
-                )
-                .finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));                
+        // This button for the DRIVER will zero the gyro's angle
+        new JoystickButton(m_joystick2, 12)
+            .whileTrue(new RunCommand( // test with InstantCommand
+                () -> DriveTrain.getInstance().zeroHeading(),
+                DriveTrain.getInstance()));
 
-        new JoystickButton(m_joystick2, 6)
-            .toggleOnTrue(
-                new RunCommand(
-                    () -> Shooter.getInstance().setShooterSpeed(-0.75),
-                    Shooter.getInstance()
-                ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
+        new JoystickButton(m_joystick1, 12)
+            .whileTrue(new RunCommand(
+                () -> DriveTrain.getInstance().setX(),
+                DriveTrain.getInstance()));
 
-/* INTAKE */
-       
-       // lower intake + start flywheels
-        new JoystickButton(m_joystick2, 3)
+        new JoystickButton(m_joystick1, 2)
             .whileTrue(
-                new RunCommand(
-                    () -> Intake.getInstance().moveIntakeDown(),
-                    Intake.getInstance()
-                )
-            )
+                new RunCommand(()-> 
+                Intake.getInstance().runIntake()))
             .whileFalse(
-                new RunCommand(
-                    () -> Intake.getInstance().stopElevatorIntake(),
-                    Intake.getInstance()
-                )
-            );
+                new RunCommand(() ->
+                Intake.getInstance().stopIntake()));
 
-        // raise intake
-        new JoystickButton(m_joystick2, 5)
+        new JoystickButton(m_joystick1, 5)
             .whileTrue(
                 new RunCommand(
                     () -> Intake.getInstance().moveIntakeUp(),
@@ -150,62 +126,59 @@ public class Controller extends SubsystemBase{
                 )
             );
 
-        new JoystickButton(m_joystick2, 2)
+        new JoystickButton(m_joystick1, 6)
+            .whileTrue(
+                new RunCommand(
+                    () -> Intake.getInstance().moveIntakeDown(),
+                    Intake.getInstance()
+                )
+            )
+            .whileFalse(
+                new RunCommand(
+                    () -> Intake.getInstance().stopElevatorIntake(),
+                    Intake.getInstance()
+                )
+            );
+
+        new JoystickButton(m_joystick1, 3)
             .whileTrue(
                 new RunCommand(()-> 
-                Intake.getInstance().runIntake()))
+                Shooter.getInstance().setShooterRPM(RPMshooter)))
             .whileFalse(
                 new RunCommand(() ->
-                Intake.getInstance().stopIntake()));
-            
-            new JoystickButton(m_joystick1, 2)
-                    .toggleOnTrue(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
-
-                    // new JoystickButton(m_joystick2, 3)
-        //     .toggleOnTrue(new RunCommand(
-        //         () -> new RotationLock(new PhotonCamera(getName()), DriveTrain.getInstance())
-        //     )); // !!!Will require testing to ensure compatibility!!!
-
+                Shooter.getInstance().stopShooter()));
+        
+        
+        new JoystickButton(m_joystick1, 4)
+            .toggleOnTrue(
+                new RunCommand(
+                    () -> Shooter.getInstance().setShooterSpeed(-0.75),
+                    Shooter.getInstance()
+                ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
+        
+        
         // new JoystickButton(m_joystick2, 4)
         //     .toggleOnTrue(
         //         new RunCommand(
-        //             () -> Shooter.getInstance().setShooterSpeed(Shooter.getInstance().getSpeed()),
+        //             () -> Shooter.getInstance().setShooterRPM(RPMshooter),
         //             Shooter.getInstance()
         //         )
-        //     )
-        //     .toggleOnFalse(
-        //         new RunCommand(
-        //             () -> Shooter.getInstance().setShooterSpeed(0.0),
-        //             Shooter.getInstance()
-        //         )
-        //     );
-        /* 
-            new JoystickButton(m_joystick2, 7) 
-                .onTrue(shooterSpeedPercent += 5);
-        */
-        // new JoystickButton(m_joystick2, 6)
-        //     .toggleOnTrue(
-        //         new RunCommand(
-        //             () -> Shooter.getInstance().setShooterSpeed(shooterSpeedPercent),
-        //             Shooter.getInstance()
-        //         )
-        //     )
-        //     .toggleOnFalse(
-        //         new RunCommand(
-        //             () -> Shooter.getInstance().setShooterSpeed(0.0),
-        //             Shooter.getInstance()
-        //         )
-        //     );
+        //         .finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
+
+        // new JoystickButton(m_joystick2, 9)
+        //     .onTrue(new InstantCommand(() -> RPMshooter += 100));
+
+        // new JoystickButton(m_joystick2, 10)
+        //     .whileTrue(new RunCommand(() -> Shooter.getInstance().setShooterRPM(RPMshooter)));
             
-        // throughtake to shooter cmd
-            // .toggleOnFalse(new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance()));
-            //    .toggleOnFalse(new RunCommand(
-            //     () -> ThroughTake.getInstance().stopThroughTake()));
+        // new JoystickButton(m_joystick2, 11)
+        //     .onTrue(new InstantCommand(() -> RPMshooter -= 100));
     }
 
     @Override
     public void periodic() {
         //   LimelightHelpers.RawDetection[] detections = LimelightHelpers.getRawDetections(LimelightConstants.limelight_three);
         //   System.out.println(detections);
+        RPMshooter = SmartDashboard.getNumber("Shooter RPM", 4500);
     }
 }
