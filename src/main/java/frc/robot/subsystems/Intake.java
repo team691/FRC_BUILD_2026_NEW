@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkMax;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants.IntakeConstants;
 import frc.robot.utils.Elastic;
@@ -68,6 +69,8 @@ public class Intake extends SubsystemBase {
    
     public void moveIntakeDown() {
         intakeTalonMotor.set(moveDownSpeed);
+        // Commands.waitSeconds(3);
+        // stopElevatorIntake();
         // DogLog.log("Intake", "Intake down");
         intakeTalonMotor.setNeutralMode(NeutralModeValue.Brake);
     }

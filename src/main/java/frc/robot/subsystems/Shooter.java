@@ -27,6 +27,7 @@ import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import frc.robot.subsystems.LEDStrip;
 
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,6 +39,7 @@ public class Shooter extends SubsystemBase {
     public static Shooter getInstance() {return m_shooter;}
     public static final String cam_thing = "HD_USB_Camera";
     private final PhotonCamera camza = new PhotonCamera(cam_thing);
+    private final LEDStrip ledStrip = LEDStrip.getInstance();
     SimpleTimer sTimer = new SimpleTimer();
     Transform3d position = new Transform3d();
      HashMap<Integer, Float> AprilTagHashMap = new HashMap<>();
@@ -63,23 +65,22 @@ public class Shooter extends SubsystemBase {
 
     public void setShooterRPM(double targetRPM) {
       double targetRPS = targetRPM / 60.0;
-      System.out.println("current RPM: " + shooterMotor.getVelocity().getValueAsDouble()*60);
-      System.out.println("amps: " + shooterMotor.getSupplyCurrent());
       shooterMotor.setControl(velocityRequest.withVelocity(targetRPS));
+      if (shooterMotor.getSupplyCurrent().getValueAsDouble() > 30) {
+        ledStrip.Stuck();
+      }
+      else {
+        ledStrip.Shoot();
+      }
+    }
 
-      // TODO: test tolerance code
-      // double tolerance = 1.0;
-
-      // if (Math.abs(shooterMotor.getVelocity().getValueAsDouble() - targetRPS) <= tolerance) {
-      //   ThroughTake.getInstance().runThroughTake(0.7);
-      // }
+    public double getShooterRPM() {
+      return shooterMotor.getVelocity().getValueAsDouble() * 60.0;
     }
 
     // TODO: when we are not shooting/not our turn, set shooter speed to like 0.75 (constant) for moving balls to other side
     public void setShooterSpeed(double speed) {
         System.out.println("amps: " + shooterMotor.getSupplyCurrent());
-
-
 
         // if(!x && !y){
         //   shooterMotor.set(speed);

@@ -5,33 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Middle blue #1"
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Thrutake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Middle blue #2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle blue #3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle blue #2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle blue #3"
+            "pathName": "Copy of AVR_RED_TEST"
           }
         }
       ]

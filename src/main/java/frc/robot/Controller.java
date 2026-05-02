@@ -27,8 +27,8 @@ public class Controller extends SubsystemBase{
     XboxController m_controller = new XboxController(2);
     double shooterSpeedPercent = 0.845;
     PhotonCamera mustyCamera = new PhotonCamera(getName());
-    double RPMshooter  = 2000; // 4500
-    ThruTakeToShooter m_thruTakeToShooter = new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance());
+    double RPMshooter  = 2300; // 4500
+    // ThruTakeToShooter m_thruTakeToShooter = new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance());
     
 
     // values will be between 0 and 1 in this map
@@ -50,10 +50,10 @@ public class Controller extends SubsystemBase{
     }
     private double setSpeed() {
         if (m_joystick1.getRawButton(1) == true) {
-            return 4.0; // 9.0
+            return 3.0; // 8.0
         }
         else {
-            return 20.0; // 2.0
+            return 10.0; // 28.0
         }
     }
     
@@ -72,11 +72,6 @@ public class Controller extends SubsystemBase{
     }
 
     private void configureButtonBindings() {
-        // thrutake to shooter (pv default), normal thrutake, normal shooter toggle w/ photon vision shooter
-        // lower intake with flywheel running, raise intake
-        // when normal flywheel intake runs, set raise/lower intake to -0.1 speed to ensure it stays there
-        // climber
-        // shooter (pv speed)
         new JoystickButton(m_joystick2, 4)
             .whileTrue(
                 new RunCommand(
@@ -95,10 +90,10 @@ public class Controller extends SubsystemBase{
 
         // This button for the DRIVER will zero the gyro's angle
         new JoystickButton(m_joystick2, 12)
-            .whileTrue(new RunCommand( // test with InstantCommand
+            .whileTrue(new InstantCommand( // test with InstantCommand
                 () -> DriveTrain.getInstance().zeroHeading(),
                 DriveTrain.getInstance()));
-
+                
         new JoystickButton(m_joystick1, 12)
             .whileTrue(new RunCommand(
                 () -> DriveTrain.getInstance().setX(),
@@ -148,14 +143,13 @@ public class Controller extends SubsystemBase{
                 new RunCommand(() ->
                 Shooter.getInstance().stopShooter()));
         
-        
         new JoystickButton(m_joystick1, 4)
-            .toggleOnTrue(
+            .whileTrue(
                 new RunCommand(
                     () -> Shooter.getInstance().setShooterSpeed(-0.75),
                     Shooter.getInstance()
                 ).finallyDo((interrupted) -> Shooter.getInstance().stopShooter()));
-        
+
         
         // new JoystickButton(m_joystick2, 4)
         //     .toggleOnTrue(

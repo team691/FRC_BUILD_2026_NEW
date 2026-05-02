@@ -390,7 +390,7 @@ public class DriveTrain extends SubsystemBase {
   // Zeros robot heading
   public void zeroHeading() {
     m_navx.reset();
-    Elastic.sendNotification(ReZero);
+    // Elastic.sendNotification(ReZero);
   }
 
   public Command zeroAuotHeading() {

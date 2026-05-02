@@ -9,14 +9,17 @@ import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 import org.littletonrobotics.junction.LoggedPowerDistribution;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-// import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.RawDetection;
 
@@ -125,6 +128,18 @@ public class RobotContainer {
         // m_chooser.addOption("Test PP_LL AutoAlign", DriveTrain.getInstance().ppLLTestAlign());
 
         SmartDashboard.putData("Field", field);
+        m_chooser.addOption(
+          "BasiCShootAuto",
+          new SequentialCommandGroup(
+            Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterRPM(1500)),
+            // new WaitCommand(0.5),
+            // Commands.waitSeconds(0.5),
+            ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().runThroughTake(0.6))
+            // Commands.waitSeconds(10)
+            // Shooter.getInstance().runOnce(() -> Shooter.getInstance().stopShooter()),
+            // ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().stopThroughTake())
+          )
+        );
 
         // NamedCommands.registerCommand("IntakeOn", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeDown()));
         // NamedCommands.registerCommand("StopIntake", Intake.getInstance().runOnce(() -> Intake.getInstance().moveIntakeUp()));
@@ -132,7 +147,32 @@ public class RobotContainer {
         // NamedCommands.registerCommand("ThruTake", ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().runThroughTake(1)));
         // NamedCommands.registerCommand("StopThruTake", ThroughTake.getInstance().runOnce(() -> ThroughTake.getInstance().stopThroughTake()));
         
+        new EventTrigger("Shoot").whileTrue(new RunCommand(() -> Shooter.getInstance().setShooterSpeed(0.85))).whileFalse(new InstantCommand(() -> Shooter.getInstance().stopShooter()));
+        // NamedCommands.registerCommand("Wait", new WaitCommand(2));
+        // NamedCommands.registerCommand("Wait", Commands.waitSeconds(2));
+        new EventTrigger("ThroughTake").whileTrue(new InstantCommand(() -> ThroughTake.getInstance().runThroughTake(0.4)));
+        new EventTrigger("Intake").whileTrue(new InstantCommand(() -> Intake.getInstance().moveIntakeDown()));
         // NamedCommands.registerCommand("Shoot", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0.7)));
+        // NamedCommands.registerCommand("ShooterWithThroughTake", new ThroughTakeToShoot());
+        // NamedCommands.registerCommand(
+        //   "ShooterWithThroughTake",
+        //   new InstantCommand(() -> Shooter.getInstance().setShooterRPM(500))
+          // Commands.sequence(
+          //     Commands.runOnce(() -> Shooter.getInstance().setShooterRPM(500)),
+
+          //     Commands.waitUntil(() ->
+          //         Math.abs(Shooter.getInstance().getShooterRPM() - 500) <= 50
+          //     ),
+
+          //     Commands.run(() -> ThroughTake.getInstance().runThroughTake(0.7))
+          //         .withTimeout(4),
+
+          //     Commands.runOnce(() -> {
+          //         Shooter.getInstance().stopShooter();
+          //         ThroughTake.getInstance().stopThroughTake();
+          //     })
+          // )
+      // );
         // NamedCommands.registerCommand("StopShooter", Shooter.getInstance().runOnce(() -> Shooter.getInstance().setShooterSpeed(0)));
 
         // Pathplanner Registered Event Markers
@@ -187,15 +227,35 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-        // return new InstantCommand(
+        // return new SequentialCommandGroup(
+        //   SequentialCommandGroup
+        // );
+        //     () -> (Shooter.getInstance().setShooterRPM(1000), Shooter.getInstance().stopShooter());
+        //     Commands.waitSeconds(0.5),
+        //     () -> ThroughTake.getInstance().runThroughTake(0.5)
         //         () -> Shooter.getInstance().setShooterSpeed(0.6),
         //         Shooter.getInstance()
+        // );
+
+        // return new SequentialCommandGroup(
+        //   new InstantCommand(() -> Shooter.getInstance().setShooterRPM(4312)),
+        //   new WaitCommand(0.1),
+        //   new InstantCommand(() -> ThroughTake.getInstance().runThroughTake(0.5))
+        // );
+
+        // return new InstantCommand(
+        //   () -> Shooter.getInstance().setShooterSpeed(0.7),
+        //   Shooter.getInstance()
+        // );
+
+        // return new InstantCommand(
+        //     () -> new ThroughTakeToShoot()
         // );
 
         // return new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance());
 
         // return new InstantCommand(
-        //         () -> new ThruTakeToShooter(ThroughTake.getInstance(), Shooter.getInstance())
+        //         () -> new ThruTakeToShooter()
         // );
     return m_chooser.getSelected();
   }

@@ -22,8 +22,14 @@ import frc.robot.utils.Elastic;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.Elastic.Notification;
 import frc.robot.utils.Elastic.NotificationLevel;
+import frc.robot.subsystems.LEDStrip;
+
 
 import org.littletonrobotics.junction.LoggedRobot;
+
+// import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+// import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.PWM;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,6 +47,10 @@ public class Robot extends LoggedRobot {
   // private final Vision m_vision = new Vision();
   private static final Notification teleop = new Notification(NotificationLevel.INFO, "Teleop Mode", "Teleoperated mode activated");
   public Notification auto = new Notification(NotificationLevel.INFO, "Auto Mode", "Autonomous mode activated");
+  // REV Blinkin connected to PWM port 0 (change to your actual port)
+  // private final PWMSparkMax m_blinkin = new PWMSparkMax(0);
+  private final LEDStrip ledStrip = LEDStrip.getInstance();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -109,18 +119,21 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    //m_lights.Red();
-    //m_lights.redHue();
+    ledStrip.Red();
+    // add red lights
   }
 
   @Override
   public void disabledPeriodic() {
+    // m_blinkin.set(BLINKIN_RED);
+
     //candle.setLEDs(255, 0, 0);
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    ledStrip.Blue();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // DriveTrain.getInstance().zeroHeading();
@@ -152,7 +165,8 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.\
-    
+    ledStrip.Green();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
       Elastic.sendNotification(teleop);
@@ -163,6 +177,7 @@ public class Robot extends LoggedRobot {
   @Override
   
   public void teleopPeriodic() {
+    // m_blinkin.setPulseTimeMicroseconds(BLINKIN_GREEN);
     // m_vision.runPosePeriodic();
     // m_vision.globalPoseEstimator();
     // System.out.println("limelight pose estimator thing: " + m_vision.globalPoseEstimator());
