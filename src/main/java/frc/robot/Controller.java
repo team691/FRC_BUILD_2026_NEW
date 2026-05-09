@@ -50,10 +50,10 @@ public class Controller extends SubsystemBase{
     }
     private double setSpeed() {
         if (m_joystick1.getRawButton(1) == true) {
-            return 3.0; // 8.0
+            return 0.5; // 8.0
         }
         else {
-            return 10.0; // 28.0
+            return 3.0; // 28.0
         }
     }
     

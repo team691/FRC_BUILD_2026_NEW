@@ -110,6 +110,7 @@ public class Shooter extends SubsystemBase {
     public void stopShooter() {
       shooterMotor.setNeutralMode(NeutralModeValue.Brake);
       shooterMotor.set(0);
+      ledStrip.Green();
     }
 
     public double CreateShooterSpeed(double distance, double angle_to_hub, Float constant) {

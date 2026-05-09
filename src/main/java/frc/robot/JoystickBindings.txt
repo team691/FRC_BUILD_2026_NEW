@@ -1,14 +1,13 @@
-joystick 1 (RIGHT)
+joystick 1 (LEFT)
+- button 3: run throughtake backwards (HOLD)
+- button 4: Run through take forward (HOLD)
+- button 5: running thvcroughtake to shooter
+- button 12: Zero Gyro angle (TAP)
+
+joystick 2 (RIGHT)
 - button 2: run Intake (HOLD)
 - button 3: run shooter [BASE RPM] (HOLD)
 - button 4: run shooter backwards (HOLD)
 - button 5: move intake up (HOLD)
 - button 6: move intake down (HOLD)
 - button 12: Rotates All Wheels 45 deg (TAP)
-
-joystick 2 (LEFT)
-
-- button 3: run throughtake backwards (HOLD)
-- button 4: Run through take forward (HOLD)
-- button 5: running thvcroughtake to shooter
-- button 12: Zero Gyro angle (TAP)
